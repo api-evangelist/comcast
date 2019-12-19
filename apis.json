@@ -1,0 +1,72 @@
+{
+    "name": "Comcast",
+    "description": "Save on XFINITY Digital Cable TV, High Speed Internet and Home Phone Services. Enjoy entertainment your way with great deals on XFINITY by Comcast.",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/2643-comcast.jpg",
+    "tags": [
+        "api lifeycle",
+        "api provider",
+        "broadcasts",
+        "cable",
+        "have api",
+        "isp",
+        "networks",
+        "telecommunications",
+        "televisions",
+        "venture capital"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/comcast\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "Comcast",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/2643-comcast.jpg",
+            "humanURL": "http:\/\/www.comcast.com\/",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/comcast-openapi.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "Crunchbase",
+            "url": "https:\/\/crunchbase.com\/organization\/comcast-interactive-media"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "http:\/\/www.crunchbase.com\/company\/comcast"
+        },
+        {
+            "type": "Developers",
+            "url": "https:\/\/developer.comcast.com\/site\/global\/home\/index.gsp"
+        },
+        {
+            "type": "Email",
+            "url": "comcast_privacy@comcast.com"
+        },
+        {
+            "type": "Transparency Report",
+            "url": "http:\/\/corporate.comcast.com\/comcast-voices?tag=comcast-transparency-report"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/XFINITY"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/comcast\/"
+        },
+        {
+            "type": "Website",
+            "url": "http:\/\/www.comcast.com\/"
+        }
+    ]
+}
