@@ -1,7 +1,12 @@
 aid: comcast
-url: https://raw.githubusercontent.com/api-evangelist/comcast/refs/heads/main/apis.yml
+url: 
+  https://raw.githubusercontent.com/api-evangelist/comcast/refs/heads/main/apis.yml
 modified: '2026-03-21'
 apis: []
 common:
   - type: Website
     url: https://www.comcast.com
+description: >-
+  Comcast is a global media and technology company with two primary businesses, Comcast
+  Cable and NBCUniversal, providing video, internet, voice, wireless, and entertainment
+  services to residential and business customers.
