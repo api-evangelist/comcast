@@ -4,99 +4,30 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Comcast
 providerId: comcast
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
-  - Cable
-  - Connected Devices
-  - Entertainment
-  - Internet
-  - Media
-  - Mobile
-  - Streaming
-  - Wireless
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Comcast API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  - Telecommunications
+  - Cable
+description: Comcast does not publish a public API rate-limit reference. Partner-facing X1/Flex APIs are
+  governed by the developer portal's terms of service rather than a public throttling spec.
+sources:
+  - https://developer.comcast.com/
+  - https://developers.xfinity.com/TOS.html
+notes: No public rate-limit numbers; throttling is partner-contract governed.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Comcast Firebolt SDK
-      - Comcast Authentication API (SAT)
-      - Comcast Open Ingest API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Comcast Firebolt SDK
-      - Comcast Authentication API (SAT)
-      - Comcast Open Ingest API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Comcast Firebolt SDK
-      - Comcast Authentication API (SAT)
-      - Comcast Open Ingest API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Comcast Firebolt SDK
-      - Comcast Authentication API (SAT)
-      - Comcast Open Ingest API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Comcast Firebolt SDK
-      - Comcast Authentication API (SAT)
-      - Comcast Open Ingest API
+  - name: X1 / Flex partner APIs (undocumented)
+    scope: partner
+    metric: varies
+    limit: see partner documentation
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Backoff
+    description: Use exponential backoff with jitter on 429/503 responses; respect Retry-After if present.
+  - name: Partner-governed
+    description: Throughput governed by partner publisher agreement and X1/Flex platform certification.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
