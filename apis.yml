@@ -122,6 +122,8 @@ apis:
       - Submitting media metadata to NBCUniversal pipelines
       - Bulk content publication for OTT distribution
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/comcast
   - type: Website
     url: https://www.comcast.com
   - type: DeveloperDocs
