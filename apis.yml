@@ -13,7 +13,7 @@ tags:
   - Wireless
   - Fortune 100
 type: Index
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 kind: company
 created: '2026-03-21'
@@ -38,7 +38,7 @@ apis:
       - SDK
       - Set-Top Box
       - TV Apps
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.developer.comcast.com/docs/firebolt-apis
     properties:
       - url: https://docs.developer.comcast.com/docs/firebolt-apis
@@ -74,7 +74,7 @@ apis:
       - Authentication
       - OAuth
       - Tokens
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://sat-prod.codebig2.net
     humanURL: https://docs.developer.comcast.com/docs/081-core-authentication
     properties:
@@ -101,7 +101,7 @@ apis:
       - Media
       - Metadata
       - NBCUniversal
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://compass-mmpwebservice-prod.codebig2.net
     humanURL: https://docs.developer.comcast.com/docs/endpoints
     properties:
