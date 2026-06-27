@@ -145,7 +145,7 @@ common:
     url: https://www.xfinity.com/privacy/policy
   - type: Terms
     url: https://developers.xfinity.com/TOS.html
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://developer.comcast.com/llms.txt
 maintainers:
   - FN: Kin Lane
