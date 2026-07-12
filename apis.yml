@@ -123,6 +123,8 @@ apis:
       - Submitting media metadata to NBCUniversal pipelines
       - Bulk content publication for OTT distribution
 common:
+  - type: DomainSecurity
+    url: security/comcast-domain-security.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/comcast
   - type: Website
