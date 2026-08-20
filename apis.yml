@@ -84,6 +84,9 @@ apis:
     name: Comcast Authentication API (SAT)
     tags:
       - Authentication
+      - Tokens
+    tags_raw:
+      - Authentication
       - OAuth
       - Tokens
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
