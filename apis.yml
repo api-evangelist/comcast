@@ -34,6 +34,7 @@ accessModel:
   confidence: medium
   source:
   - plans
+  - {url: 'https://www.comcast.com', status: 301, note: 'declared website redirects to https://www.xfinity.com/ — a different registrable domain (comcast.com -> xfinity.com), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
   generated: '2026-07-22'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/comcast.png
@@ -41,7 +42,7 @@ access: 3rd-Party
 kind: company
 created: '2026-03-21'
 modified: '2026-04-26'
-position: Consumer
+position: Consuming
 description: >-
   Comcast Corporation is a global media and technology company with two primary
   businesses, Comcast Cable (Xfinity) and NBCUniversal, providing video,
