@@ -1,0 +1,128 @@
+# Comcast — authentication profile
+#
+# Two distinct authentication surfaces, and they are not the same system:
+#
+#  1. COMCAST SAT (Security Access Token) — a real OAuth 2.0 authorization
+#     server for server-to-server partner calls. Confirmed by a live
+#     /.well-known/openid-configuration on sat-prod.codebig2.net (saved verbatim
+#     at well-known/comcast-sat-openid-configuration.json) AND by the published
+#     request/response example on the Open Ingest Endpoints docs page.
+#  2. FIREBOLT ON-DEVICE TOKENS — the Authentication module of the Firebolt Core
+#     OpenRPC contract. This is not an HTTP auth scheme at all; it is a JSON-RPC
+#     method an app calls on the device to obtain a platform, device, session or
+#     root token, gated by Firebolt capability grants rather than by scopes.
+generated: '2026-09-05'
+method: searched
+method_note: >-
+  derive-authentication.py reads OpenAPI securitySchemes and returned nothing
+  for this provider (Comcast publishes OpenRPC, not OpenAPI). Written by hand
+  from the fetched discovery document and the provider's own docs.
+source: >-
+  https://sat-prod.codebig2.net/.well-known/openid-configuration (HTTP 200,
+  application/json, fetched 2026-09-05) and
+  https://docs.developer.comcast.com/docs/endpoints (HTTP 200, fetched 2026-09-05)
+docs:
+  - https://docs.developer.comcast.com/docs/endpoints
+  - https://docs.developer.comcast.com/docs/081-core-authentication
+  - https://docs.developer.comcast.com/docs/170-core-authentication
+provider: Comcast
+providerId: comcast
+schemes:
+  - id: comcast-sat
+    api: comcast:authentication-api
+    type: oauth2
+    flow: client_credentials
+    label: Comcast SAT (Security Access Token)
+    issuer: https://sat-prod.codebig2.net
+    token_endpoint: https://sat-prod.codebig2.net/v2/ws/token.oauth2
+    token_endpoint_documented_alias: https://sat-prod.codebig2.net/oauth/token
+    jwks_uri: https://sat-prod.codebig2.net/v2/sign-keys/available
+    grant_types_supported:
+      - client_credentials
+      - urn:ietf:params:oauth:grant-type:token-exchange
+    token_endpoint_auth_methods_supported:
+      - client_secret_basic
+      - client_secret_post
+    token_endpoint_auth_signing_alg_values_supported:
+      - ES256
+      - RS256
+    dpop_signing_alg_values_supported:
+      - ES256
+      - RS256
+    subject_types_supported:
+      - public
+      - pairwise
+    credential_headers:
+      - x-client-id
+      - x-client-secret
+    token_type: Bearer
+    token_lifetime_seconds: 86400
+    presented_as: 'Authorization: Bearer <access_token>'
+    scopes_returned:
+      - x1:compass:piws:read
+      - x1:compass:piws:write
+    notes: >-
+      The docs show credentials sent as x-client-id / x-client-secret request
+      headers against https://sat-prod.codebig2.net/oauth/token, while the
+      discovery document advertises the RFC 6749 client_secret_basic /
+      client_secret_post methods against /v2/ws/token.oauth2. Both are recorded
+      because both are published; a client should treat the discovery document
+      as authoritative and the docs example as the partner-onboarding recipe.
+      Tokens are 24 hours and must be refreshed. SAT clients are provisioned
+      with an allowedPartner value, so the token is partner-scoped as well as
+      client-scoped.
+  - id: comcast-open-ingest
+    api: comcast:open-ingest-api
+    type: http
+    scheme: bearer
+    label: Open Ingest bearer token
+    bearer_format: Comcast SAT access token
+    depends_on: comcast-sat
+    base_url: https://compass-mmpwebservice-prod.codebig2.net
+    notes: >-
+      The Open Ingest proxy accepts nothing but a SAT bearer token. Probed
+      anonymously 2026-09-05: every path on this host, including every
+      /.well-known/ path, returns HTTP 401. There is no anonymous surface.
+  - id: firebolt-authentication-module
+    api: comcast:firebolt-sdk
+    type: platform-token
+    label: Firebolt Authentication module (on-device JSON-RPC)
+    transport: JSON-RPC 2.0 over the Firebolt transport
+    contract: openrpc/comcast-firebolt-core-openrpc.json
+    methods:
+      - Authentication.token
+      - Authentication.device
+      - Authentication.session
+      - Authentication.root
+    token_types:
+      - platform
+      - device
+      - session
+      - root
+      - account
+    gated_by: Firebolt capability grants (see scopes/comcast-scopes.yml)
+    capabilities:
+      - xrn:firebolt:capability:token:platform
+      - xrn:firebolt:capability:token:device
+      - xrn:firebolt:capability:token:session
+      - xrn:firebolt:capability:token:root
+      - xrn:firebolt:capability:token:account
+    notes: >-
+      Authentication.token is marked deprecated as of Firebolt 0.9.0 in the
+      contract itself; the replacement is the per-token-type methods. Tokens
+      resolve to {value, expires, type}. This is a device-local capability
+      check, not an HTTP authorization header.
+mtls: false
+openid_connect:
+  discovery_document_served: true
+  url: https://sat-prod.codebig2.net/.well-known/openid-configuration
+  full_oidc: false
+  note: >-
+    The document is served at the OIDC discovery path but describes an OAuth 2.0
+    authorization server: there is no authorization_endpoint, no
+    userinfo_endpoint, no id_token_signing_alg_values_supported and no
+    scopes_supported. Treat it as RFC 8414 authorization-server metadata served
+    at the OIDC path, not as an OpenID Provider.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

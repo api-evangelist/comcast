@@ -4,33 +4,126 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Comcast
 providerId: comcast
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
+modified: '2026-09-05'
+# Upgraded 2026-09-05 from a 2026-05-04 bulk-sweep `generated` stub to a
+# `searched` artifact read from Comcast's own published thresholds pages.
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://docs.developer.comcast.com/docs/app-performance-reliability-thresholds
+  and https://docs.developer.comcast.com/docs/baseline-functionality-requirements
+  (both HTTP 200, fetched 2026-09-05)
+docs:
+  - https://docs.developer.comcast.com/docs/app-performance-reliability-thresholds
+  - https://docs.developer.comcast.com/docs/baseline-functionality-requirements
+reconciled: true
 tags:
   - Rate Limiting
   - Telecommunications
-  - Cable
-description: Comcast does not publish a public API rate-limit reference. Partner-facing X1/Flex APIs are
-  governed by the developer portal's terms of service rather than a public throttling spec.
-sources:
-  - https://developer.comcast.com/
-  - https://developers.xfinity.com/TOS.html
-notes: No public rate-limit numbers; throttling is partner-contract governed.
+  - Connected Devices
+
+# ---------------------------------------------------------------------------
+# API request throttling: NOT PUBLISHED. An honest zero.
+# ---------------------------------------------------------------------------
+limit_count: 0
+description: >-
+  Comcast publishes no per-key, per-account or per-endpoint request rate limits,
+  and no rate-limit response headers, for any of its three surfaces (the
+  on-device Firebolt JSON-RPC interface, the SAT token endpoint, or the Open
+  Ingest proxy). limit_count is 0 because that is the true number, not because
+  the pages were not read.
 responseCodes:
-  throttled: 429
-limits:
-  - name: X1 / Flex partner APIs (undocumented)
-    scope: partner
-    metric: varies
-    limit: see partner documentation
+  throttled: null
+  note: >-
+    No documented status code on exhaustion. 429 is NOT asserted — the earlier
+    version of this file recorded 429 as a fact and it was never sourced.
+headers:
+  published: false
+  x_ratelimit: false
+  ratelimit_rfc: false
+  retry_after: false
+  note: >-
+    No X-RateLimit-*, no RateLimit-*, no Retry-After documented anywhere. An
+    agent gets no runtime budget signal from this API.
+limits: []
+
+# ---------------------------------------------------------------------------
+# What Comcast DOES publish instead: hard platform budgets an app must live
+# inside. These are a different kind of limit — they constrain the CLIENT, not
+# the request rate — and they are enforced with real consequences: certification
+# failure before launch, and escalation, feature restriction or DELISTING after.
+# ---------------------------------------------------------------------------
+platform_budgets:
+  enforcement: >-
+    "Your app may fail certification if it does not meet these thresholds.
+    Post-launch breaches may result in escalation, feature restrictions or
+    delisting." — Comcast, App Performance & Reliability Thresholds
+  operational:
+    - id: OR-01
+      name: Time to Minimally Useable (TTMU)
+      threshold: P95 <= 10s over 24hr
+      minimum_sample: 1000 launches
+      measured_from: app starts loading into the WPE runtime
+      measured_to: the app calls Lifecycle.ready()
+    - id: OR-01a
+      name: Splash screen appearance (Sky Glass)
+      threshold: <= 2s from cold start
+    - id: OR-01b
+      name: Splash screen appearance (all other devices)
+      threshold: <= 5s from cold start
+    - id: OR-01c
+      name: UI load from cold start (certification proxy metric)
+      threshold: <= 10s
+    - id: OR-01d
+      name: Multiroom allowance (Sky Q, UK only)
+      threshold: +10% load time
+    - id: OR-01e
+      name: Minimum network for flawless operation
+      threshold: '>= 2.5 Mbps'
+    - id: OR-02
+      name: Error Free Session Rate (EFSR)
+      threshold: '> 95% over 4hr'
+      minimum_sample: 1000 launches
+      measured_via: Metrics.error()
+    - id: OR-03
+      name: Errors Per Content Minute (EPCM)
+      threshold: '< 0.05 over 4hr'
+      minimum_sample: 1000 launches
+  functional:
+    - id: FR-06
+      name: Memory usage — stable state
+      threshold: ~190MB, 220MB acceptable
+    - id: FR-06a
+      name: Memory usage — inactive state
+      threshold: '< 120MB'
+    - id: FR-06b
+      name: Memory usage — degradation ceiling
+      threshold: '> 390MB causes performance degradation and possible crash from firmware reclaim'
+      tooling: Remote Web Inspector Memory Monitor
+    - id: FR-15
+      name: Maximum devices per account
+      threshold: partner-defined; the app must surface a message when reached
+  note: >-
+    These are the numbers an integrator actually has to engineer against on this
+    platform. They are recorded here because "no rate limits published" alone
+    would misrepresent a surface that in fact publishes tighter, harder budgets
+    than most rate-limited APIs do.
+
 policies:
-  - name: Backoff
-    description: Use exponential backoff with jitter on 429/503 responses; respect Retry-After if present.
-  - name: Partner-governed
-    description: Throughput governed by partner publisher agreement and X1/Flex platform certification.
+  - name: Token lifetime
+    description: >-
+      SAT bearer tokens expire after 86,400 seconds (24 hours) and must be
+      refreshed. Cache them; do not mint per request. Source:
+      https://docs.developer.comcast.com/docs/endpoints
+  - name: Metadata validator batch size
+    description: >-
+      The GMRSS Metadata Validator checks a test feed of up to four items per
+      run. Source: https://docs.developer.comcast.com/docs/validate-your-metadata-feed
+  - name: Backoff (recommended, not published by Comcast)
+    description: >-
+      Comcast publishes no backoff guidance. Standard exponential backoff with
+      jitter is a client-side recommendation, not a provider policy, and is
+      marked as such so it is not read back as a Comcast statement.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

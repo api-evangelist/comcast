@@ -1,0 +1,98 @@
+# Comcast — Firebolt API release history
+#
+# Comcast publishes no dated changelog page on docs.developer.comcast.com. What
+# it publishes instead is the versioned specification itself: tagged releases of
+# the Firebolt OpenRPC contracts, and a full side-by-side reference for four
+# API versions on the docs host. This artifact records that, from the tags and
+# from the version-stamped documents in openrpc/ — not from a changelog page
+# that does not exist.
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://github.com/rdkcentral/firebolt-apis (tags and releases, read
+  2026-09-05); registry.npmjs.org publish timestamps;
+  https://docs.developer.comcast.com/llms.txt
+provider: Comcast
+providerId: comcast
+scheme: semver
+current_version: 1.7.0
+current_version_published: '2025-09-04'
+changelog_page_published: false
+changelog_page_note: >-
+  No dated changelog, release-notes or "what's new" page appears anywhere in the
+  351-entry docs index at https://docs.developer.comcast.com/llms.txt. Version
+  history is discoverable only from the repository tags and from the fact that
+  four API versions are documented in parallel.
+entries:
+  - version: 1.7.0
+    date: '2025-09-04'
+    status: current
+    npm_published: '2025-09-04'
+    docs: https://docs.developer.comcast.com/docs/170
+    highlights:
+      - Core SDK at 147 methods, Manage SDK at 181, Discovery SDK at 2.
+      - HDMIInput module documented in both Core (11 methods) and Manage (16 methods).
+      - Capabilities module (10 methods) published in Core.
+      - Full reference published on the docs host alongside 1.5.0, 1.0.0 and 0.8.1.
+    breaking: false
+    additions: true
+  - version: 1.6.0
+    date: '2025-08-21'
+    status: superseded
+    docs: null
+    note: >-
+      Tagged in the repository. Comcast does not publish a 1.6.0 reference on the
+      docs host — the docs jump 1.5.0 to 1.7.0 — so 1.6.0 has a contract but no
+      published human reference.
+    breaking: null
+    additions: null
+  - version: 1.5.0
+    date: '2025-03-03'
+    status: supported
+    docs: https://docs.developer.comcast.com/docs/150
+    highlights:
+      - 'VoiceGuidance.speed / onSpeedChanged / setSpeed deprecated in favour of VoiceGuidance.rate().'
+    breaking: false
+    additions: true
+  - version: 1.4.1
+    date: '2024-10-01'
+    status: superseded
+    breaking: false
+  - version: 1.4.0
+    date: '2024-09-23'
+    status: superseded
+    highlights:
+      - 'Device.screenResolution and Device.onScreenResolutionChanged deprecated; apps directed to W3C platform APIs.'
+    breaking: false
+  - version: 1.3.0
+    date: '2024-08-12'
+    status: superseded
+    breaking: false
+  - version: 1.0.0
+    date: null
+    status: supported
+    docs: https://docs.developer.comcast.com/docs/100
+    note: First stable Firebolt API. Full reference still published.
+  - version: 0.8.1
+    date: null
+    status: legacy
+    docs: https://docs.developer.comcast.com/docs/081
+    note: >-
+      Oldest version with a published reference. The apis.yml Documentation
+      pointer for the Comcast Authentication API still targets the 0.8.1 page.
+in_flight:
+  - version: 1.8.0
+    channel: prerelease
+    latest_tag: v1.8.0-next.47
+    date: '2026-03-31'
+    source: https://github.com/rdkcentral/firebolt-apis/releases
+    note: >-
+      47 prereleases tagged, none promoted to the npm `latest` tag. The published
+      SDK has been on 1.7.0 for a year while 1.8.0 iterates in prerelease.
+cadence_observation: >-
+  Six tagged releases across roughly thirteen months (2024-08 to 2025-09), then a
+  twelve-month gap on the stable channel with active 1.8.0 prerelease work. The
+  repository itself is current — last pushed 2026-07-22.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

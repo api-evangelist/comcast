@@ -1,0 +1,50 @@
+# Comcast — command-line tooling
+#
+# THE HEADLINE IS A NEGATIVE, and it is deliberate. Comcast ships NO CLI for any
+# of its APIs. There is no `comcast` binary, no Firebolt CLI, no Open Ingest
+# CLI. Searched 2026-09-05: npm (@firebolt-js/cli — absent), the 351-entry docs
+# index at https://docs.developer.comcast.com/llms.txt, and the rdkcentral and
+# Comcast GitHub organizations.
+#
+# What exists is a CLI for the UI FRAMEWORK Comcast's docs build on. It is
+# recorded here so the distinction is on the record and nobody later reports
+# "Comcast ships a CLI" from a package that never touches a Comcast API.
+generated: '2026-09-05'
+method: searched
+source: >-
+  registry.npmjs.org; https://docs.developer.comcast.com/llms.txt;
+  https://docs.developer.comcast.com/docs/hello-world-guide (fetched 2026-09-05)
+provider: Comcast
+providerId: comcast
+api_cli_published: false
+api_cli_note: >-
+  No CLI calls any Comcast API. The Firebolt surface is on-device JSON-RPC, not
+  a network API a terminal could call; the SAT and Open Ingest surfaces are
+  plain HTTPS with no wrapper tool.
+platform_tooling:
+  - name: '@lightningjs/cli'
+    registry: npm
+    url: https://www.npmjs.com/package/@lightningjs/cli
+    version: 2.14.2
+    published: '2024-04-15'
+    scope: UI framework scaffolding and local dev server for Lightning apps.
+    calls_comcast_api: false
+    ownership: >-
+      Published by Metrological (a Comcast company) maintainers; the Lightning
+      repositories sit in the same rdkcentral organization as Firebolt.
+    documented_by_comcast: >-
+      https://docs.developer.comcast.com/docs/hello-world-guide makes Lightning
+      a required dependency of the official Firebolt starter project.
+    currency_note: Last published 2024-04-15 — the oldest package in the platform family.
+  - name: Mock Firebolt
+    repository: https://github.com/rdkcentral/mock-firebolt
+    scope: Locally-run mock Firebolt OS / reverse proxy. Run from a clone, not installed as a CLI binary.
+    calls_comcast_api: false
+    see: sandbox/comcast-sandbox.yml
+pointer_decision: >-
+  No `type: CLI` pointer is emitted in apis.yml. The CLI scored by the rubric is
+  a CLI for the provider's API, and neither of the tools above is one. Emitting
+  the pointer would credit Comcast with a surface it does not ship.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

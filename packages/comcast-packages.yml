@@ -1,0 +1,118 @@
+# Comcast — first-party client packages
+#
+# OWNERSHIP (STEP 0c). The @firebolt-js/* packages are published from the
+# rdkcentral GitHub organization, NOT from github.com/Comcast, so the domain
+# check needs stating: Firebolt is Comcast's connected-TV application platform,
+# its reference documentation is served by Comcast at
+# docs.developer.comcast.com/docs/firebolt-apis, and the npm maintainers of
+# record on @firebolt-js/sdk are Comcast and Sky (a Comcast company) staff
+# addresses — jeremy.lacivita@comcast.com, kevin_pearson@cable.comcast.com,
+# joseph_martin@cable.comcast.com, adam.czynszak@sky.uk. RDK Central is the
+# open-source home Comcast publishes the platform through; the packages are
+# first-party Comcast work distributed under Apache-2.0.
+generated: '2026-09-05'
+method: searched
+source: >-
+  registry.npmjs.org metadata endpoints for each package, plus
+  https://docs.developer.comcast.com/docs/firebolt-apis (2026-09-05)
+provider: Comcast
+providerId: comcast
+registries_searched:
+  - npm
+  - PyPI
+  - Maven Central
+  - NuGet
+  - pkg.go.dev
+  - RubyGems
+  - crates.io
+packages:
+  - name: '@firebolt-js/sdk'
+    registry: npm
+    url: https://www.npmjs.com/package/@firebolt-js/sdk
+    language: javascript
+    official: true
+    version: 1.7.0
+    published: '2025-09-04'
+    license: Apache-2.0
+    repository: https://github.com/rdkcentral/firebolt-apis
+    api: comcast:firebolt-sdk
+    description: >-
+      The Firebolt Core SDK. Wraps the 147-method Firebolt Core OpenRPC contract
+      (Accessibility, Account, Advertising, Authentication, Capabilities, Device,
+      Discovery, HDMIInput, Keyboard, Lifecycle, Localization, Metrics,
+      Parameters, Profile, SecondScreen, SecureStorage). Zero runtime
+      dependencies.
+    ships_contract: openrpc/comcast-firebolt-core-openrpc.json
+  - name: '@firebolt-js/manage-sdk'
+    registry: npm
+    url: https://www.npmjs.com/package/@firebolt-js/manage-sdk
+    language: javascript
+    official: true
+    version: 1.7.0
+    published: '2025-09-04'
+    license: Apache-2.0
+    repository: https://github.com/rdkcentral/firebolt-core-sdk
+    api: comcast:firebolt-sdk
+    description: >-
+      The Firebolt Manage SDK — 181 methods for settings-management apps
+      (ClosedCaptions, Privacy, Localization, VoiceGuidance, UserGrants, Wifi,
+      HDMIInput, Keyboard, PinChallenge, AcknowledgeChallenge).
+    ships_contract: openrpc/comcast-firebolt-manage-openrpc.json
+  - name: '@firebolt-js/discovery-sdk'
+    registry: npm
+    url: https://www.npmjs.com/package/@firebolt-js/discovery-sdk
+    language: javascript
+    official: true
+    version: 1.7.0
+    published: '2025-09-04'
+    license: Apache-2.0
+    repository: https://github.com/rdkcentral/firebolt-core-sdk
+    api: comcast:firebolt-sdk
+    description: >-
+      The Firebolt Discovery SDK — the Content.requestUserInterest /
+      Content.onUserInterest surface for user-interest signalling.
+    ships_contract: openrpc/comcast-firebolt-discovery-openrpc.json
+  - name: '@firebolt-js/openrpc'
+    registry: npm
+    url: https://www.npmjs.com/package/@firebolt-js/openrpc
+    language: javascript
+    official: true
+    version: 3.2.0
+    published: '2025-02-28'
+    license: Apache-2.0
+    repository: https://github.com/rdkcentral/firebolt-openrpc
+    kind: tooling
+    description: >-
+      The Firebolt SDK code and documentation generator. Reads the Firebolt
+      OpenRPC modules and emits the SDKs and reference docs. Tooling rather than
+      a client library, and the oldest release in the family — six months behind
+      the SDKs it generates.
+currency_note: >-
+  All three shipped SDKs are on 1.7.0, published the same day (2025-09-04), and
+  match the 1.7.0 API version stamped inside the OpenRPC documents in openrpc/.
+  The SDKs are current with the contract. rdkcentral/firebolt-apis carries
+  v1.8.0-next.* prereleases (latest 2026-03-31) that have not been promoted to
+  the npm `latest` tag.
+not_found:
+  - registry: PyPI
+    note: No first-party Comcast/Firebolt client library found.
+  - registry: Maven Central
+    note: No first-party Comcast/Firebolt client library found.
+  - registry: NuGet
+    note: No first-party Comcast/Firebolt client library found.
+  - registry: crates.io
+    note: No first-party Comcast/Firebolt client library found.
+  - registry: RubyGems
+    note: No first-party Comcast/Firebolt client library found.
+  - registry: pkg.go.dev
+    note: No first-party Comcast/Firebolt client library found.
+  - name: firebolt-openrpc
+    registry: npm
+    note: >-
+      Unscoped `firebolt-openrpc` on npm is NOT Comcast's. It is a
+      dependency-confusion placeholder (homepage intel.aikido.dev, description
+      "Placeholder to prevent dependency confusion"). The real package is the
+      scoped @firebolt-js/openrpc. Recorded so nobody wires the wrong one.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

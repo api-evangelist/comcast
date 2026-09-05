@@ -1,0 +1,177 @@
+# Comcast — standards conformance
+#
+# Every entry below points at a location in a document actually fetched during
+# this pass: one of the three OpenRPC contracts in openrpc/, the SAT discovery
+# document in well-known/, or a named Comcast docs page. Nothing is asserted
+# from a marketing claim.
+generated: '2026-09-05'
+method: derived
+source: >-
+  openrpc/comcast-firebolt-{core,manage,discovery}-openrpc.json v1.7.0,
+  well-known/comcast-sat-openid-configuration.json,
+  https://docs.developer.comcast.com/docs/metadata-overview,
+  https://docs.developer.comcast.com/docs/endpoints
+provider: Comcast
+providerId: comcast
+conformance:
+  - id: openrpc
+    name: OpenRPC 1.2.4
+    conforms: true
+    evidence: >-
+      All three contracts declare "openrpc": "1.2.4" at the document root —
+      openrpc/comcast-firebolt-core-openrpc.json (147 methods),
+      comcast-firebolt-manage-openrpc.json (181 methods),
+      comcast-firebolt-discovery-openrpc.json (2 methods).
+    spec: https://spec.open-rpc.org/
+
+  - id: json-rpc-2.0
+    name: JSON-RPC 2.0
+    conforms: true
+    evidence: >-
+      OpenRPC describes a JSON-RPC 2.0 interface by definition, and Comcast's
+      own reference pages print the wire format for every method, e.g.
+      https://docs.developer.comcast.com/docs/170-core-accessibility shows
+      {"jsonrpc":"2.0","id":1,"method":"Accessibility.audioDescriptionSettings"}.
+    spec: https://www.jsonrpc.org/specification
+
+  - id: json-schema
+    name: JSON Schema (draft-07 style, embedded)
+    conforms: true
+    evidence: >-
+      Method params and results are JSON Schema documents under
+      components/schemas and the Firebolt x-schemas namespaces (Types,
+      Accessibility, Localization, Advertising, Capabilities, Discovery, Entity,
+      Entertainment, Policies, Intents, Lifecycle, SecondScreen).
+    spec: https://json-schema.org/
+
+  - id: oauth2
+    name: OAuth 2.0 client credentials
+    conforms: true
+    evidence: >-
+      well-known/comcast-sat-openid-configuration.json declares
+      grant_types_supported ["client_credentials",
+      "urn:ietf:params:oauth:grant-type:token-exchange"] and
+      token_endpoint_auth_methods_supported ["client_secret_basic",
+      "client_secret_post"].
+    spec: https://datatracker.ietf.org/doc/html/rfc6749
+
+  - id: rfc8414
+    name: OAuth 2.0 Authorization Server Metadata
+    conforms: partial
+    evidence: >-
+      sat-prod.codebig2.net serves the metadata document, but at the OIDC path
+      /.well-known/openid-configuration (HTTP 200) rather than at
+      /.well-known/oauth-authorization-server, which returns 404. The body is
+      authorization-server metadata: issuer, token_endpoint, jwks_uri,
+      grant_types_supported.
+    spec: https://datatracker.ietf.org/doc/html/rfc8414
+
+  - id: rfc8693
+    name: OAuth 2.0 Token Exchange
+    conforms: true
+    evidence: >-
+      grant_types_supported in the SAT discovery document includes
+      "urn:ietf:params:oauth:grant-type:token-exchange".
+    spec: https://datatracker.ietf.org/doc/html/rfc8693
+
+  - id: rfc9449
+    name: DPoP — Demonstrating Proof of Possession
+    conforms: true
+    evidence: >-
+      The SAT discovery document publishes
+      dpop_signing_alg_values_supported ["ES256","RS256"].
+    spec: https://datatracker.ietf.org/doc/html/rfc9449
+
+  - id: oidc
+    name: OpenID Connect Discovery
+    conforms: false
+    evidence: >-
+      The document is served at the OIDC discovery path but is not an OpenID
+      Provider configuration: no authorization_endpoint, no userinfo_endpoint,
+      no id_token_signing_alg_values_supported, no scopes_supported, no
+      response_types_supported.
+    spec: https://openid.net/specs/openid-connect-discovery-1_0.html
+
+  - id: rfc9457
+    name: RFC 9457 Problem Details
+    conforms: false
+    evidence: >-
+      Not applicable to the JSON-RPC surface, which carries errors in the
+      JSON-RPC 2.0 error object rather than application/problem+json. The Open
+      Ingest surface returns an XML OpenIngestResult document, not problem+json.
+    spec: https://datatracker.ietf.org/doc/html/rfc9457
+
+  - id: llms-txt
+    name: llms.txt
+    conforms: true
+    evidence: >-
+      https://docs.developer.comcast.com/llms.txt — HTTP 200, text/plain, 30,514
+      bytes, 351 entries, saved verbatim at llms/comcast-llms.txt. Every docs
+      page additionally carries an in-page pointer back to it and serves a `.md`
+      twin at <page>.md.
+    spec: https://llmstxt.org/
+
+# ---------------------------------------------------------------------------
+# DOMAIN-STANDARD SIGNATURE (pipeline step 7b)
+# The market here is connected-TV content distribution and media metadata
+# syndication, and Comcast declares two of that market's standards in the
+# contract and the ingest specification rather than in prose.
+# ---------------------------------------------------------------------------
+domain_standards:
+  - id: mrss
+    name: Media RSS (MRSS) / Golden Media RSS
+    conforms: true
+    market: media metadata syndication
+    evidence: >-
+      The Open Ingest payload is MRSS. Comcast's own metadata pages name the
+      syntax — "Our platform uses Golden Media RSS (GMRSS) syntax, which is an
+      amalgam of MRSS XML and Merlin-specific extensions" — and the published
+      sample feed on https://docs.developer.comcast.com/docs/validate-your-metadata-feed
+      binds the MRSS namespace directly: xmlns:ns4="http://search.yahoo.com/mrss/",
+      over RSS 2.0, alongside Dublin Core Terms
+      xmlns:ns3="http://purl.org/dc/terms/". The Comcast-specific extension
+      namespace is urn:uri:merlin-gold.
+    spec: https://www.rssboard.org/media-rss
+    integrator_impact: >-
+      A partner already publishing an MRSS catalog feed ingests without a bespoke
+      connector; only the Merlin gmrss: extension fields and the Comcast program
+      types need mapping.
+  - id: dublin-core-terms
+    name: Dublin Core Terms (DCMI Metadata Terms)
+    conforms: true
+    market: media metadata syndication
+    evidence: >-
+      http://purl.org/dc/terms/ is bound as a namespace in every published
+      Open Ingest / GMRSS sample feed on
+      https://docs.developer.comcast.com/docs/endpoints and
+      https://docs.developer.comcast.com/docs/validate-your-metadata-feed.
+    spec: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+  - id: firebolt
+    name: Firebolt (RDK Central connected-TV application API)
+    conforms: true
+    market: connected-TV application platforms
+    role: author
+    evidence: >-
+      Comcast does not merely conform to Firebolt, it authors it: the OpenRPC
+      contracts in openrpc/ ARE the Firebolt specification at version 1.7.0,
+      published under Apache-2.0 at github.com/rdkcentral/firebolt-apis with
+      Comcast and Sky staff as the npm publishers of record, and Comcast's own
+      certification requirements page makes conformance a condition of shipping
+      an app on X1.
+    spec: https://github.com/rdkcentral/firebolt-apis
+
+# Not applicable — recorded so a reader knows they were considered, not skipped.
+not_applicable:
+  - fhir
+  - fapi
+  - scim
+  - odata
+  - psd2
+  - json:api
+  - hl7v2
+  - x12
+  - iso-20022
+  - openrtb
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

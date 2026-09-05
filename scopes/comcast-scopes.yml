@@ -1,0 +1,199 @@
+# Comcast — authorization scope model
+#
+# TWO SEPARATE AUTHORIZATION MODELS, recorded together because a consumer will
+# meet both:
+#
+#  1. SAT OAuth SCOPES. The Comcast SAT authorization server issues
+#     client_credentials tokens. Its discovery document publishes NO
+#     `scopes_supported` array, so the only scope strings on record are the two
+#     the provider prints in its own Open Ingest token-response example. They
+#     are recorded verbatim and nothing is inferred beyond them.
+#
+#  2. FIREBOLT CAPABILITIES. Firebolt does not use OAuth scopes. Every one of
+#     the 330 methods in the three OpenRPC contracts declares the capability
+#     URNs it uses, manages or provides, in the `capabilities` tag on the method
+#     itself. A capability is granted per-app and per-user through the UserGrants
+#     module, and the pattern is fixed by the contract:
+#     ^xrn:firebolt:capability:([a-z0-9-]+)((:[a-z0-9-]+)?)$
+#     Functionally this IS the permission surface an integrator must reason
+#     about, so it is recorded here rather than left unwritten because it is not
+#     spelled "scope".
+generated: '2026-09-05'
+method: searched
+method_note: >-
+  derive-oauth-scopes.py reads OpenAPI oauth2 securitySchemes and found none
+  (Comcast publishes OpenRPC). The OAuth scopes below are read from the
+  provider's published token response; the capability list is derived
+  exhaustively from the three OpenRPC contracts in openrpc/.
+source: >-
+  https://docs.developer.comcast.com/docs/endpoints (HTTP 200, 2026-09-05) and
+  openrpc/comcast-firebolt-{core,manage,discovery}-openrpc.json v1.7.0
+docs:
+  - https://docs.developer.comcast.com/docs/endpoints
+  - https://docs.developer.comcast.com/docs/170-core-capabilities
+  - https://docs.developer.comcast.com/docs/170-manage-usergrants
+provider: Comcast
+providerId: comcast
+oauth:
+  api: comcast:authentication-api
+  authorization_server: https://sat-prod.codebig2.net
+  scopes_supported_published: false
+  scopes_supported_note: >-
+    The /.well-known/openid-configuration served by sat-prod.codebig2.net omits
+    scopes_supported entirely. There is no published scope catalogue.
+  scopes_observed_in_docs:
+    - name: x1:compass:piws:read
+      source: https://docs.developer.comcast.com/docs/endpoints
+      description: >-
+        Read scope returned in the documented SAT token response for the Open
+        Ingest / Compass PIWS surface. Comcast does not publish a definition
+        beyond the scope string itself.
+    - name: x1:compass:piws:write
+      source: https://docs.developer.comcast.com/docs/endpoints
+      description: >-
+        Write scope returned in the same documented SAT token response, and the
+        scope that authorizes POSTing an asset package to the Open Ingest proxy.
+firebolt_capabilities:
+  scheme: firebolt-capability-urn
+  namespace_uri: https://meta.comcast.com/firebolt/capabilities
+  pattern: '^xrn:firebolt:capability:([a-z0-9\-]+)((:[a-z0-9\-]+)?)$'
+  roles:
+    use: An app consumes the capability.
+    manage: An app changes the setting behind the capability (Manage SDK).
+    provide: An app implements the capability for the platform.
+  granted_through:
+    - Capabilities.info
+    - Capabilities.request
+    - UserGrants.grant
+    - UserGrants.deny
+    - UserGrants.app
+  deny_reasons_defined_in_contract: true
+  count: 62
+  capabilities:
+  - id: xrn:firebolt:capability:accessibility:audiodescriptions
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:accessibility:closedcaptions
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:accessibility:highcontrastui
+    roles: [use]
+  - id: xrn:firebolt:capability:accessibility:voiceguidance
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:account:id
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:account:uid
+    roles: [use]
+  - id: xrn:firebolt:capability:advertising:configuration
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:advertising:identifier
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:advertising:policy
+    roles: [use]
+  - id: xrn:firebolt:capability:approve:content
+    roles: [use]
+  - id: xrn:firebolt:capability:approve:purchase
+    roles: [use]
+  - id: xrn:firebolt:capability:capabilities:info
+    roles: [use]
+  - id: xrn:firebolt:capability:capabilities:request
+    roles: [use]
+  - id: xrn:firebolt:capability:device:distributor
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:device:id
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:device:info
+    roles: [use]
+  - id: xrn:firebolt:capability:device:make
+    roles: [use]
+  - id: xrn:firebolt:capability:device:model
+    roles: [use]
+  - id: xrn:firebolt:capability:device:name
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:device:sku
+    roles: [use]
+  - id: xrn:firebolt:capability:device:uid
+    roles: [use]
+  - id: xrn:firebolt:capability:discovery:content-access
+    roles: [use]
+  - id: xrn:firebolt:capability:discovery:entity-info
+    roles: [provide]
+  - id: xrn:firebolt:capability:discovery:interest
+    roles: [provide, use]
+  - id: xrn:firebolt:capability:discovery:navigate-to
+    roles: [use]
+  - id: xrn:firebolt:capability:discovery:policy
+    roles: [use]
+  - id: xrn:firebolt:capability:discovery:purchased-content
+    roles: [provide]
+  - id: xrn:firebolt:capability:discovery:sign-in-status
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:discovery:watch-next
+    roles: [use]
+  - id: xrn:firebolt:capability:discovery:watched
+    roles: [use]
+  - id: xrn:firebolt:capability:grants:state
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:input:keyboard
+    roles: [provide, use]
+  - id: xrn:firebolt:capability:inputs:hdmi
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:lifecycle:initialize
+    roles: [use]
+  - id: xrn:firebolt:capability:lifecycle:launch
+    roles: [use]
+  - id: xrn:firebolt:capability:lifecycle:ready
+    roles: [use]
+  - id: xrn:firebolt:capability:lifecycle:state
+    roles: [use]
+  - id: xrn:firebolt:capability:localization:additional-info
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:localization:country-code
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:localization:language
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:localization:locale
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:localization:locality
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:localization:location
+    roles: [use]
+  - id: xrn:firebolt:capability:localization:postal-code
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:localization:time-zone
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:metrics:distributor
+    roles: [use]
+  - id: xrn:firebolt:capability:metrics:general
+    roles: [use]
+  - id: xrn:firebolt:capability:metrics:media
+    roles: [use]
+  - id: xrn:firebolt:capability:network:status
+    roles: [use]
+  - id: xrn:firebolt:capability:privacy:settings
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:profile:flags
+    roles: [use]
+  - id: xrn:firebolt:capability:protocol:dial
+    roles: [use]
+  - id: xrn:firebolt:capability:protocol:wifi
+    roles: [use]
+  - id: xrn:firebolt:capability:secondscreen:protocol
+    roles: [use]
+  - id: xrn:firebolt:capability:storage:secure
+    roles: [manage, use]
+  - id: xrn:firebolt:capability:token:account
+    roles: [manage]
+  - id: xrn:firebolt:capability:token:device
+    roles: [use]
+  - id: xrn:firebolt:capability:token:platform
+    roles: [use]
+  - id: xrn:firebolt:capability:token:root
+    roles: [use]
+  - id: xrn:firebolt:capability:token:session
+    roles: [use]
+  - id: xrn:firebolt:capability:usergrant:acknowledgechallenge
+    roles: [provide]
+  - id: xrn:firebolt:capability:usergrant:pinchallenge
+    roles: [provide]
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

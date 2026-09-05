@@ -1,0 +1,91 @@
+# Comcast — client-side UI component surface
+#
+# OWNERSHIP FIRST. The Lightning packages below are published from the same
+# rdkcentral GitHub organization that hosts Firebolt, by the same corporate
+# family: the npm maintainers of record are Metrological staff addresses
+# (e.g. e.haandrikman@metrological.com), and Metrological is a Comcast company.
+# Comcast's own developer docs present Lightning as the framework for building
+# on its platform — "Intro to Lightning" and "Development Stack & Tools" both
+# direct app developers to it, and the official Hello World guide makes it a
+# required dependency of the Firebolt starter project.
+#
+# What this artifact is NOT: an embeddable-widget or hosted-checkout surface.
+# Comcast ships no drop-in web components for third-party sites. These are the
+# on-device UI building blocks for apps that run ON Comcast set-top boxes.
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://docs.developer.comcast.com/docs/lightning-for-xfinity,
+  https://docs.developer.comcast.com/docs/development-stack-tools,
+  https://docs.developer.comcast.com/docs/hello-world-guide,
+  https://docs.developer.comcast.com/docs/quick-launch-template (all HTTP 200,
+  fetched 2026-09-05); registry.npmjs.org metadata
+provider: Comcast
+providerId: comcast
+families:
+  - id: lightning
+    name: Lightning
+    kind: WebGL/Canvas2D UI framework
+    homepage: http://www.lightningjs.io/
+    repository: https://github.com/rdkcentral/Lightning
+    docs: https://docs.developer.comcast.com/docs/lightning-for-xfinity
+    official: true
+    ownership_note: >-
+      rdkcentral-hosted, maintained by Metrological (a Comcast company).
+      Documented by Comcast as the recommended framework for its platform.
+    description: >-
+      Open-source WebGL/JavaScript UI framework built for high-quality UI
+      rendering on memory-constrained set-top boxes. Comcast's docs state it
+      outperforms DOM-based frameworks on this hardware because it renders
+      through WebGL and Canvas2D rather than DOM elements.
+    packages:
+      - name: '@lightningjs/ui-components'
+        registry: npm
+        version: 2.25.1
+        published: '2024-12-03'
+        repository: https://github.com/rdkcentral/Lightning-UI-Components
+        role: The component library — the actual reusable UI elements.
+      - name: '@lightningjs/ui'
+        registry: npm
+        version: 1.3.19
+        published: '2023-12-11'
+        repository: https://github.com/rdkcentral/Lightning-ui
+        role: Earlier UI element library.
+      - name: '@lightningjs/sdk'
+        registry: npm
+        version: 5.5.7
+        published: '2026-02-10'
+        role: The Lightning app SDK (app shell, router, media, locale).
+    currency_note: >-
+      The SDK is current (2026-02-10) but both component libraries are stale
+      relative to it — @lightningjs/ui-components last published 2024-12-03 and
+      @lightningjs/ui 2023-12-11. Read that as an SDK moving faster than its
+      component layer, not as an abandoned framework.
+  - id: quick-launch-template
+    name: Quick Launch Template (QLT)
+    kind: platform-hosted prebuilt surface
+    docs: https://docs.developer.comcast.com/docs/quick-launch-template
+    official: true
+    description: >-
+      A Comcast-platform splash-screen technology that lets an app provider
+      self-serve the launch experience — background images, foreground images,
+      animations and text — with two experience types to choose from. Rendered
+      by the platform, not by the app, which is what makes it a prebuilt
+      surface rather than a library.
+    note: >-
+      QLT apps carry additional GPU memory constraints in the Inactive state
+      (requirements QS-03 and QS-06). See rate-limits/comcast-rate-limits.yml.
+  - id: firebolt-hello-world
+    name: Firebolt Hello World starter
+    kind: starter template
+    repository: https://github.com/rdkcentral/firebolt-hello-world
+    docs: https://docs.developer.comcast.com/docs/hello-world-guide
+    official: true
+    description: >-
+      The official starter project the Hello World guide clones. Combines a
+      Lightning app shell with @firebolt-js/sdk and demonstrates importing the
+      Device and Lifecycle modules.
+embeddable_for_third_party_sites: false
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

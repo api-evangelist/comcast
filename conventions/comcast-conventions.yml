@@ -1,0 +1,244 @@
+# Comcast — cross-cutting runtime conventions
+#
+# Comcast's public developer surface is not a REST API, and that shapes every
+# field below. The primary contract is a JSON-RPC 2.0 interface described in
+# OpenRPC (the Firebolt SDKs), executed on-device between an app and the
+# platform. The secondary surface is a single-endpoint XML ingest proxy behind
+# OAuth client-credentials. Conventions that only exist in an HTTP/REST world —
+# cursor pagination, sparse fieldsets, an Idempotency-Key header — are recorded
+# as absent rather than invented.
+generated: '2026-09-05'
+method: derived
+source: >-
+  openrpc/comcast-firebolt-{core,manage,discovery}-openrpc.json v1.7.0;
+  https://docs.developer.comcast.com/docs/endpoints;
+  https://docs.developer.comcast.com/docs/170-core-capabilities;
+  well-known/comcast-sat-openid-configuration.json (all fetched 2026-09-05)
+provider: Comcast
+providerId: comcast
+
+surfaces:
+  - id: firebolt
+    style: JSON-RPC 2.0 (OpenRPC 1.2.4)
+    transport: on-device Firebolt transport / WebSocket
+    methods: 330
+    mutating_methods: 43 setters + 9 clear/remove/reset operations
+  - id: sat
+    style: OAuth 2.0 token endpoint
+    transport: HTTPS
+  - id: open-ingest
+    style: single-endpoint XML POST
+    transport: HTTPS
+
+auth_style:
+  firebolt: >-
+    No HTTP authorization header. Access is decided by Firebolt capability
+    grants declared on each method (see scopes/comcast-scopes.yml) and resolved
+    through Capabilities.info / Capabilities.request and the UserGrants module.
+  http: >-
+    Bearer token from the Comcast SAT authorization server, 24-hour lifetime.
+    See authentication/comcast-authentication.yml.
+
+naming:
+  methods: PascalCase module + camelCase member, e.g. Device.screenResolution
+  events: 'on<Property>Changed for property subscriptions; 97 event methods in total'
+  setters: 'set<Property> on the Manage SDK; 43 in total'
+  capability_urns: 'xrn:firebolt:capability:<domain>[:<subject>], lowercase, hyphenated'
+  schemas: PascalCase titles under components/schemas and namespaced x-schemas
+
+property_pattern:
+  description: >-
+    Firebolt models most state as a "property": one method name serves three
+    call shapes — read it, subscribe to it, and (on the Manage SDK) set it.
+    The contract tags them explicitly, which is what makes this derivable rather
+    than inferred.
+  tags:
+    property: 53 methods
+    'property:readonly': 13 methods
+    'property:immutable': 11 methods
+    subscriber: 66 methods
+    setter: 43 methods
+
+pagination:
+  supported: false
+  note: >-
+    No pagination convention exists. Firebolt methods return single objects or
+    small bounded arrays; there are no list endpoints with cursors, offsets or
+    page parameters anywhere in the three contracts.
+
+field_expansion:
+  supported: false
+metadata_fields:
+  supported: false
+request_id_tracing:
+  supported: true
+  mechanism: JSON-RPC 2.0 `id` correlates request and response
+  note: >-
+    There is no separate X-Request-Id / trace header. The JSON-RPC envelope's
+    own `id` is the only correlation identifier on the Firebolt surface, and it
+    is client-assigned.
+
+versioning:
+  scheme: semver, on the API specification itself
+  current: 1.7.0
+  strategy: >-
+    Versions are pinned by SDK package version, not by URL path or a version
+    header. Comcast publishes the full reference for 1.7.0, 1.5.0, 1.0.0 and
+    0.8.1 side by side on docs.developer.comcast.com, and the OpenRPC documents
+    carry info.version.
+  in_flight_versions:
+    - 1.7.0
+    - 1.5.0
+    - 1.0.0
+    - 0.8.1
+  prerelease: 'v1.8.0-next.* tagged on github.com/rdkcentral/firebolt-apis, not promoted to npm latest'
+  see: lifecycle/comcast-lifecycle.yml
+
+error_envelope:
+  shape: JSON-RPC 2.0 error object
+  fields: [code, message, data]
+  problem_json: false
+  note: >-
+    The OpenRPC documents declare NO method-level `errors` arrays — zero across
+    all 330 methods — so the specific application error codes are not in the
+    machine-readable contract. What IS in the contract is the deny model behind
+    capability failures: Capabilities/DenyReason and CapPermissionStatus.
+  see: errors/comcast-problem-types.yml
+
+rate_limit_signaling:
+  headers_published: false
+  status_on_exhaustion: null
+  note: >-
+    Comcast publishes no rate-limit numbers and no rate-limit response headers
+    for either surface. What it publishes instead are hard PLATFORM budgets an
+    app must live inside — a 190MB RAM cap and stated Error Free Session Rate /
+    Time To Minimally Usable thresholds — which is a different kind of limit and
+    is recorded in rate-limits/comcast-rate-limits.yml.
+  see: rate-limits/comcast-rate-limits.yml
+
+# ---------------------------------------------------------------------------
+# IDEMPOTENCY — machine verdict (roadmap#243)
+# ---------------------------------------------------------------------------
+idempotency:
+  coverage: none
+  mechanism: null
+  header: null
+  scope: []
+  retention: null
+  natural_idempotence: true
+  note: >-
+    There is no replay-protection mechanism: no Idempotency-Key header, no
+    client-supplied request key, no documented dedupe window, on any Comcast
+    surface. `coverage: none` is the honest machine verdict.
+    Separately and worth stating so the number is not misread: 43 of the 52
+    mutating Firebolt methods are `set<Property>` value assignments, which are
+    naturally idempotent — calling setEnabled(true) twice leaves the same state
+    as calling it once. That is a property of the API shape, not a mechanism the
+    provider documents, and it does nothing for the Open Ingest POST, which is
+    the one place a duplicate submission actually costs something.
+
+# ---------------------------------------------------------------------------
+# REVERSIBILITY — 15th agent-readiness dimension (0.12.0)
+# ---------------------------------------------------------------------------
+reversibility:
+  grade: documented
+  applicable: true
+  summary: >-
+    Real reversal operations exist and are named in the contract, but Comcast
+    documents NO window for any of them. Grade is `documented` (a reversal path
+    exists) and not `verified` (a reversal path plus a stated window). No window
+    is asserted here, because inventing one is the single error in this artifact
+    that could cost a partner real content.
+  write_surfaces:
+    - surface: Firebolt Manage — settings
+      operations: 43 set<Property> methods
+      reversal: >-
+        Re-invoke the same setter with the previous value. There is no undo,
+        restore or rollback operation; the caller must have kept the prior value
+        itself, which the matching getter returns.
+      reversal_operation: null
+      window: null
+      window_source: null
+      confidence: medium
+    - surface: Firebolt Core — content access
+      operations: [Discovery.contentAccess]
+      reversal: Discovery.clearContentAccess clears availabilities and entitlements previously set.
+      reversal_operation: Discovery.clearContentAccess
+      window: null
+      window_source: null
+      docs: https://docs.developer.comcast.com/docs/170-core-discovery
+      confidence: high
+    - surface: Firebolt Core — secure storage
+      operations: [SecureStorage.set]
+      reversal: SecureStorage.remove removes one key; SecureStorage.clear removes all keys in a scope.
+      reversal_operation: SecureStorage.remove
+      window: null
+      window_source: null
+      docs: https://docs.developer.comcast.com/docs/170-core-securestorage
+      confidence: high
+    - surface: Firebolt Manage — secure storage (on behalf of an app)
+      operations: [SecureStorage.setForApp]
+      reversal: SecureStorage.removeForApp / SecureStorage.clearForApp.
+      reversal_operation: SecureStorage.removeForApp
+      window: null
+      window_source: null
+      confidence: high
+    - surface: Firebolt Manage — user grants
+      operations: [UserGrants.grant]
+      reversal: UserGrants.deny reverses a grant; UserGrants.clear removes it entirely.
+      reversal_operation: UserGrants.deny
+      window: null
+      window_source: null
+      docs: https://docs.developer.comcast.com/docs/170-manage-usergrants
+      confidence: high
+    - surface: Firebolt Manage — advertising identity
+      operations: [Advertising.advertisingId]
+      reversal: >-
+        Advertising.resetIdentifier resets the advertising identifier. This is a
+        rotation, not an undo — the previous identifier is not recoverable.
+      reversal_operation: Advertising.resetIdentifier
+      window: null
+      window_source: null
+      confidence: high
+    - surface: Firebolt Manage — localization
+      operations: [Localization.addAdditionalInfo]
+      reversal: Localization.removeAdditionalInfo.
+      reversal_operation: Localization.removeAdditionalInfo
+      window: null
+      window_source: null
+      confidence: high
+    - surface: Open Ingest — content and metadata submission
+      operations: ['POST /openingestproxy/openIngestMerlin1']
+      reversal: >-
+        Not documented. The Endpoints page describes submission and the
+        OpenIngestResult response only. Rights withdrawal is expressed inside
+        the feed itself, through the gmrss:distributionRights validity window
+        (start=…;end=…;scheme=W3CDTF) on an item, rather than through a
+        retraction call — but the docs do not state that as a reversal
+        mechanism, so it is recorded as an observation, not a reversal path.
+      reversal_operation: null
+      window: null
+      window_source: null
+      confidence: low
+
+dry_run_mode:
+  available: true
+  mechanism: >-
+    Two published first-party rehearsal surfaces. Mock Firebolt
+    (github.com/rdkcentral/mock-firebolt) is a controllable mock Firebolt OS
+    that can also reverse-proxy a real device, and is the documented way to
+    exercise error and slow-response branches. The Metadata Validator at
+    developer.ott-highway.comcast.com/feedvalidator validates a GMRSS feed of up
+    to four items for syntax before it is ingested for real.
+  see: sandbox/comcast-sandbox.yml
+
+cross_references:
+  authentication: authentication/comcast-authentication.yml
+  scopes: scopes/comcast-scopes.yml
+  errors: errors/comcast-problem-types.yml
+  lifecycle: lifecycle/comcast-lifecycle.yml
+  rate_limits: rate-limits/comcast-rate-limits.yml
+  data_model: data-model/comcast-data-model.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

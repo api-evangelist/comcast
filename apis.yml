@@ -41,7 +41,7 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/comcast.pn
 access: 3rd-Party
 kind: company
 created: '2026-03-21'
-modified: '2026-04-26'
+modified: '2026-09-05'
 position: Consuming
 description: >-
   Comcast Corporation is a global media and technology company with two primary
@@ -69,10 +69,34 @@ apis:
         type: Documentation
       - url: https://docs.developer.comcast.com/docs/intro-to-firebolt
         type: GettingStarted
+      - url: https://docs.developer.comcast.com/docs/170
+        type: APIReference
+        name: Firebolt API reference 1.7.0
+      - url: openrpc/comcast-firebolt-core-openrpc.json
+        type: OpenRPC
+        name: Firebolt Core SDK 1.7.0 (OpenRPC 1.2.4, 147 methods)
+      - url: openrpc/comcast-firebolt-manage-openrpc.json
+        type: OpenRPC
+        name: Firebolt Manage SDK 1.7.0 (OpenRPC 1.2.4, 181 methods)
+      - url: openrpc/comcast-firebolt-discovery-openrpc.json
+        type: OpenRPC
+        name: Firebolt Discovery SDK 1.7.0 (OpenRPC 1.2.4, 2 methods)
+      - url: data-model/comcast-data-model.yml
+        type: DataModel
+      - url: errors/comcast-problem-types.yml
+        type: ErrorCatalog
       - url: https://www.npmjs.com/package/@firebolt-js/sdk
         type: Package
+      - url: https://www.npmjs.com/package/@firebolt-js/manage-sdk
+        type: Package
+      - url: https://www.npmjs.com/package/@firebolt-js/discovery-sdk
+        type: Package
+      - url: https://github.com/rdkcentral/firebolt-apis
+        type: Repository
+        name: Firebolt OpenRPC schemas and SDK artifact configurations
       - url: https://github.com/rdkcentral/firebolt-openrpc
         type: Repository
+        name: Firebolt SDK code and doc generator
     description: >-
       Firebolt is Comcast's application platform for building apps that run on
       TVs, set-top boxes, and other connected home devices. The Firebolt SDK
@@ -103,10 +127,16 @@ apis:
       - Tokens
     image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://sat-prod.codebig2.net
-    humanURL: https://docs.developer.comcast.com/docs/081-core-authentication
+    humanURL: https://docs.developer.comcast.com/docs/endpoints
     properties:
-      - url: https://docs.developer.comcast.com/docs/081-core-authentication
+      - url: https://docs.developer.comcast.com/docs/endpoints
         type: Documentation
+      - url: https://docs.developer.comcast.com/docs/081-core-authentication
+        type: APIReference
+        name: Firebolt Authentication module (on-device tokens, 0.8.1)
+      - url: well-known/comcast-sat-openid-configuration.json
+        type: WellKnown
+        name: SAT OAuth authorization-server metadata, served at /.well-known/openid-configuration (HTTP 200, fetched 2026-09-05)
     description: >-
       The Comcast Security Access Token (SAT) endpoint issues short-lived
       bearer tokens used to authenticate calls to Comcast partner APIs such
@@ -172,11 +202,70 @@ common:
     url: https://www.cmcsa.com/
   - type: Privacy
     url: https://www.xfinity.com/privacy/policy
-  - type: Terms
+  - type: TermsOfService
     url: https://developers.xfinity.com/TOS.html
-  - type: LlmsText
-    url: https://developer.comcast.com/llms.txt
+  - type: LLMsTxt
+    url: llms/comcast-llms.txt
+  - type: LLMsTxt
+    url: https://docs.developer.comcast.com/llms.txt
+  - type: Documentation
+    url: https://docs.developer.comcast.com/
+  - type: APIReference
+    url: https://docs.developer.comcast.com/docs/firebolt-apis
+  - type: GettingStarted
+    url: https://docs.developer.comcast.com/docs/getting-started
+  - type: Support
+    url: https://docs.developer.comcast.com/docs/getting-help
+  - type: SignUp
+    url: https://developer.comcast.com/portal/dashboard
+  - type: GitHubOrganization
+    url: https://github.com/rdkcentral
+  - type: WellKnown
+    url: well-known/comcast-well-known.yml
+  - type: Packages
+    url: packages/comcast-packages.yml
+  - type: SDKs
+    url: packages/comcast-packages.yml
+  - type: Authentication
+    url: authentication/comcast-authentication.yml
+  - type: OAuthScopes
+    url: scopes/comcast-scopes.yml
+  - type: Conformance
+    url: conformance/comcast-conformance.yml
+  - type: Conventions
+    url: conventions/comcast-conventions.yml
+  - type: Lifecycle
+    url: lifecycle/comcast-lifecycle.yml
+  - type: Deprecation
+    url: lifecycle/comcast-lifecycle.yml
+  - type: ErrorCatalog
+    url: errors/comcast-problem-types.yml
+  - type: DataModel
+    url: data-model/comcast-data-model.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: Sandbox
+    url: sandbox/comcast-sandbox.yml
+  - type: ChangeLog
+    url: changelog/comcast-changelog.yml
+  - type: Components
+    url: components/comcast-components.yml
+  - type: Plans
+    url: plans/comcast-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/comcast-rate-limits.yml
+  - type: FinOps
+    url: finops/comcast-finops.yml
+  - type: Security
+    url: security/comcast-vulnerability-disclosure.yml
+  - type: VulnerabilityDisclosure
+    url: security/comcast-vulnerability-disclosure.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 specificationVersion: '0.23'
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v3

@@ -1,0 +1,201 @@
+# Comcast — /.well-known/ discovery probe
+#
+# Probed 2026-09-05 across every host this record knows: the registrable domain
+# and www, both API baseURL hosts, the docs host, the developer portal host and
+# the Xfinity developer host.
+#
+# ONE real document was served: an OAuth/OIDC discovery document on the Comcast
+# SAT (Security Access Token) host, sat-prod.codebig2.net — the host apis.yml
+# already carries as the baseURL of the Comcast Authentication API. It is saved
+# verbatim as comcast-sat-openid-configuration.json.
+#
+# Everything else is an honest miss, and two of the misses are worth naming:
+#   * developer.comcast.com answers HTTP 200 with the SAME 405-byte SPA shell on
+#     EVERY /.well-known/ path, including paths that cannot exist. A 200 that
+#     returns an HTML shell is not a document; every one is recorded as a miss.
+#   * developers.xfinity.com answers 200 with a 4,089-byte sign-in page on some
+#     paths and 401 on others — an auth wall, not a served document.
+generated: '2026-09-05'
+method: probed
+source: live HTTPS probes of every host in apis.yml (2026-09-05)
+hosts:
+  - host: sat-prod.codebig2.net
+    note: >-
+      Comcast SAT (Security Access Token) service. The only host in this record
+      that serves a real /.well-known/ document.
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        content_type: application/json;charset=UTF-8
+        file: comcast-sat-openid-configuration.json
+        note: >-
+          Real OAuth 2.0 / OIDC discovery document. issuer https://sat-prod.codebig2.net,
+          token_endpoint /v2/ws/token.oauth2, jwks_uri /v2/sign-keys/available.
+          Declares client_credentials and RFC 8693 token-exchange grants plus
+          RFC 9449 DPoP proof signing algorithms.
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: docs.developer.comcast.com
+    note: Comcast Developer Docs (the host that serves the real llms.txt).
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: developer.comcast.com
+    note: >-
+      SPA catch-all. Every path below returned HTTP 200 with the identical
+      405-byte HTML shell, including paths that do not exist. Treated as a miss
+      on every path — a 200 serving an SPA shell is not a document.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        served: spa-shell
+        note: 405-byte HTML shell, not a document.
+      - path: /.well-known/openid-configuration
+        status: 200
+        served: spa-shell
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        served: spa-shell
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        served: spa-shell
+      - path: /.well-known/api-catalog
+        status: 200
+        served: spa-shell
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        served: spa-shell
+      - path: /.well-known/agent-card.json
+        status: 200
+        served: spa-shell
+      - path: /.well-known/agent.json
+        status: 200
+        served: spa-shell
+  - host: compass-mmpwebservice-prod.codebig2.net
+    note: >-
+      Comcast Open Ingest endpoint. Returns 401 on every path — the whole host
+      is behind SAT bearer authentication.
+    documents:
+      - path: /.well-known/security.txt
+        status: 401
+      - path: /.well-known/openid-configuration
+        status: 401
+      - path: /.well-known/oauth-authorization-server
+        status: 401
+      - path: /.well-known/oauth-protected-resource
+        status: 401
+      - path: /.well-known/api-catalog
+        status: 401
+      - path: /.well-known/ai-plugin.json
+        status: 401
+      - path: /.well-known/agent-card.json
+        status: 401
+      - path: /.well-known/agent.json
+        status: 401
+  - host: developers.xfinity.com
+    note: >-
+      Legacy Xfinity developer portal. Redirects to /users/sign_in; the 200s
+      below are that 4,089-byte sign-in page, not documents.
+    documents:
+      - path: /.well-known/security.txt
+        status: 401
+      - path: /.well-known/openid-configuration
+        status: 200
+        served: sign-in-page
+        note: 4,089-byte login HTML, identical on every 200 path.
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        served: sign-in-page
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        served: sign-in-page
+      - path: /.well-known/api-catalog
+        status: 200
+        served: sign-in-page
+      - path: /.well-known/ai-plugin.json
+        status: 401
+      - path: /.well-known/agent-card.json
+        status: 401
+      - path: /.well-known/agent.json
+        status: 401
+  - host: www.comcast.com
+    note: >-
+      Bot challenge. Every path returned HTTP 406 to an ordinary crawler with a
+      browser User-Agent. This is an edge policy, not evidence of absence — no
+      claim is made either way about what this host serves.
+    documents:
+      - path: /.well-known/security.txt
+        status: 406
+      - path: /.well-known/openid-configuration
+        status: 406
+      - path: /.well-known/oauth-authorization-server
+        status: 406
+      - path: /.well-known/oauth-protected-resource
+        status: 406
+      - path: /.well-known/api-catalog
+        status: 406
+      - path: /.well-known/ai-plugin.json
+        status: 406
+      - path: /.well-known/agent-card.json
+        status: 406
+      - path: /.well-known/agent.json
+        status: 406
+  - host: www.xfinity.com
+    note: Bot challenge (HTTP 406) on every path, same as www.comcast.com.
+    documents:
+      - path: /.well-known/security.txt
+        status: 406
+      - path: /.well-known/openid-configuration
+        status: 406
+      - path: /.well-known/oauth-authorization-server
+        status: 406
+      - path: /.well-known/oauth-protected-resource
+        status: 406
+      - path: /.well-known/api-catalog
+        status: 406
+      - path: /.well-known/ai-plugin.json
+        status: 406
+      - path: /.well-known/agent-card.json
+        status: 406
+      - path: /.well-known/agent.json
+        status: 406
+  - host: comcast.com
+    note: >-
+      Apex domain does not answer HTTPS directly (connection refused); the site
+      is served from www.comcast.com.
+    documents:
+      - path: /.well-known/security.txt
+        status: null
+        note: connection refused
+summary:
+  hosts_probed: 8
+  documents_served: 1
+  security_txt: false
+  api_catalog: false
+  agent_card: false

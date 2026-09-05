@@ -1,0 +1,42 @@
+# Comcast — packaged Agent Skills
+#
+# GENERATED, not provider-published. Comcast publishes no AGENTS.md, no /skills
+# directory and no agent-facing packaging — the 351-entry docs index at
+# https://docs.developer.comcast.com/llms.txt was searched on 2026-09-05 and
+# contains no such page. These four skills are written by API Evangelist and are
+# grounded exclusively in method names that exist in the OpenRPC contracts in
+# openrpc/ and in published Comcast docs pages, each named in the skill's own
+# `source:` frontmatter. No operation named in any skill was invented.
+generated: '2026-09-05'
+method: generated
+provider: Comcast
+providerId: comcast
+provider_published_skills: false
+grounded_in:
+  - openrpc/comcast-firebolt-core-openrpc.json
+  - openrpc/comcast-firebolt-manage-openrpc.json
+  - https://docs.developer.comcast.com/docs/endpoints
+skills:
+  - name: comcast-firebolt-app-lifecycle
+    file: comcast-firebolt-app-lifecycle.md
+    api: comcast:firebolt-sdk
+    operations: 9
+    summary: Launch, foreground/background transitions and clean shutdown of a Firebolt app.
+  - name: comcast-firebolt-capability-grants
+    file: comcast-firebolt-capability-grants.md
+    api: comcast:firebolt-sdk
+    operations: 16
+    summary: The Firebolt authorization flow — check, request, and react to capability grants.
+  - name: comcast-firebolt-media-metrics
+    file: comcast-firebolt-media-metrics.md
+    api: comcast:firebolt-sdk
+    operations: 20
+    summary: App and playback telemetry through the Metrics module, in the expected order.
+  - name: comcast-open-ingest-submission
+    file: comcast-open-ingest-submission.md
+    api: comcast:open-ingest-api
+    operations: 2
+    summary: SAT token acquisition and GMRSS metadata submission to Open Ingest.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

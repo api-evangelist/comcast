@@ -1,0 +1,76 @@
+# Provenance sidecar for the three VERBATIM OpenRPC contracts in this directory.
+#
+# The .json files are byte-identical to what Comcast publishes and are never
+# edited, so their provenance cannot live inside them. It lives here.
+generated: '2026-09-05'
+method: searched
+provider: Comcast
+providerId: comcast
+ownership_justification: >-
+  These contracts are served from the rdkcentral GitHub organization and the npm
+  @firebolt-js scope rather than from a comcast.com host, so the ownership check
+  (pipeline STEP 0c) needs stating explicitly. Firebolt is Comcast's own
+  connected-TV application platform: Comcast serves the complete human reference
+  for these exact documents at
+  https://docs.developer.comcast.com/docs/firebolt-apis, and the npm maintainers
+  of record on @firebolt-js/sdk are Comcast and Sky (a Comcast company) staff
+  addresses — jeremy.lacivita@comcast.com, kevin_pearson@cable.comcast.com,
+  joseph_martin@cable.comcast.com, adam.czynszak@sky.uk. RDK Central is the
+  open-source home Comcast publishes the platform through, not a third party
+  whose contract we mistook for Comcast's.
+contracts:
+  - file: comcast-firebolt-core-openrpc.json
+    title: Firebolt Core SDK
+    openrpc: 1.2.4
+    version: 1.7.0
+    methods: 147
+    bytes: 269096
+    fetched: '2026-09-05'
+    fetched_from: >-
+      https://registry.npmjs.org/@firebolt-js/sdk -> the 1.7.0 tarball, file
+      package/dist/firebolt-core-open-rpc.json
+    package_published: '2025-09-04'
+    upstream_repository: https://github.com/rdkcentral/firebolt-apis
+    license: Apache-2.0
+    verbatim: true
+  - file: comcast-firebolt-manage-openrpc.json
+    title: Firebolt Manage SDK
+    openrpc: 1.2.4
+    version: 1.7.0
+    methods: 181
+    bytes: 277503
+    fetched: '2026-09-05'
+    fetched_from: >-
+      https://registry.npmjs.org/@firebolt-js/manage-sdk -> the 1.7.0 tarball,
+      file package/dist/firebolt-manage-open-rpc.json
+    package_published: '2025-09-04'
+    upstream_repository: https://github.com/rdkcentral/firebolt-core-sdk
+    license: Apache-2.0
+    verbatim: true
+  - file: comcast-firebolt-discovery-openrpc.json
+    title: Firebolt Discovery SDK
+    openrpc: 1.2.4
+    version: 1.7.0
+    methods: 2
+    bytes: 62713
+    fetched: '2026-09-05'
+    fetched_from: >-
+      https://registry.npmjs.org/@firebolt-js/discovery-sdk -> the 1.7.0
+      tarball, file package/dist/firebolt-discovery-open-rpc.json
+    package_published: '2025-09-04'
+    upstream_repository: https://github.com/rdkcentral/firebolt-core-sdk
+    license: Apache-2.0
+    verbatim: true
+totals:
+  contracts: 3
+  methods: 330
+note: >-
+  Comcast serves no OpenRPC document from a comcast.com host. Probed 2026-09-05:
+  https://docs.developer.comcast.com/openrpc.json returns 404 and
+  https://developer.comcast.com/openapi.json returns the site's 405-byte SPA
+  shell. The npm dist tarball is the only machine-readable distribution of these
+  contracts, which is itself a finding: the reference is browsable on Comcast's
+  docs host but not downloadable from it.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -4,46 +4,70 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Comcast
 providerId: comcast
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
+modified: '2026-09-05'
+# Upgraded 2026-09-05 from a 2026-05-04 bulk-sweep `generated` stub to a
+# `searched` artifact, read from Comcast's own onboarding documentation.
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://docs.developer.comcast.com/docs/onboarding-process (HTTP 200),
+  https://docs.developer.comcast.com/docs/onboarding-portal (HTTP 200),
+  https://docs.developer.comcast.com/llms.txt (HTTP 200, 351 entries, contains
+  no pricing page) — all fetched 2026-09-05
+docs:
+  - https://docs.developer.comcast.com/docs/onboarding-process
+reconciled: true
 tags:
   - Telecommunications
-  - Cable
-  - Internet
+  - Connected Devices
   - Streaming
-description: Comcast operates a developer portal (developer.comcast.com) for the Xfinity X1/Flex application
-  platform and other internal-partner APIs, but does not publish public API pricing tiers. Consumer products
-  (Xfinity Internet, Mobile, TV) and Comcast Business services are priced via the consumer site, not via
-  a developer pricing page.
-sources:
-  - https://developer.comcast.com/
-  - https://docs.developer.comcast.com/
-notes: No public developer/API pricing tiers; X1/Flex app development is for partner publishers via the
-  developer portal.
-plans:
-  - id: comcast-developer-portal
-    name: Comcast Developer Portal
-    type: enterprise
-    description: App development for Xfinity X1 and Flex platforms; access requires registration as a
-      partner publisher. No public price list.
-    entries:
-      - label: Partner publisher access
-        name: partner_access
-        type: subscription
-        metric: contract
-        limit: -1
-        timeFrame: month
-        geo: US
-        unit: 1
-        price: contact developer relations
-        userMultiplied: false
-    elements:
-      - name: Xfinity X1 Platform
-      - name: Flex Platform
-      - name: Authentication API
+
+plan_count: 0
+description: >-
+  Comcast publishes NO developer plans and NO API pricing of any kind. There are
+  no tiers, no free tier, no quotas, no overage rates and no "contact sales"
+  price list. Access to the Firebolt developer platform is not purchased at all:
+  it is granted by invitation. Comcast's own onboarding page states that "our
+  partner engagement team will invite the designated primary contacts to
+  register for the portal", after which the organization completes an
+  organization profile and a per-app profile, both of which Comcast reviews.
+  There is no self-serve path and no price attached to any step.
+pricing_page_published: false
+pricing_page_note: >-
+  The 351-entry docs index at https://docs.developer.comcast.com/llms.txt
+  contains no pricing, plans or billing page. Consumer Xfinity products
+  (Internet, Mobile, TV) and Comcast Business services are priced on the
+  consumer site; that is retail telecom pricing, not API pricing, and is
+  deliberately not recorded here as a developer plan.
+
+access_model:
+  onboarding: invitation-only
+  self_serve: false
+  free_tier: false
+  trial: false
+  gating:
+    - Invitation from the Comcast partner engagement team.
+    - Organization profile submitted and reviewed by Comcast.
+    - App profile submitted and reviewed by Comcast, per app.
+    - Program Agreement signed — required of ALL partners.
+    - >-
+      Distribution Agreement signed — required only for apps distributed on
+      Xfinity / Xumo. Terms for other distributors are handled outside the portal.
+    - App certification passed before production launch.
+  portal: https://developer.comcast.com/portal/dashboard
+  regional_note: >-
+    Several onboarding and requirements pages state they apply to North America
+    only; non-North-American partners are routed to Sky partner management
+    (Partner_Mgmt@sky.uk).
+
+open_source_note: >-
+  One part of the surface IS free and unconditional: the Firebolt specification
+  and SDKs are published under Apache-2.0 on npm and github.com/rdkcentral. An
+  engineer can read the full 330-method contract and build against Mock Firebolt
+  without any Comcast relationship. What the invitation gates is not the API
+  documentation — it is distribution on Comcast devices.
+
+plans: []
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

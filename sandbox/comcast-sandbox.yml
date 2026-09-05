@@ -1,0 +1,106 @@
+# Comcast — test / sandbox surface
+#
+# Comcast publishes no API sandbox in the payments sense — there are no test
+# keys, no test-vs-live modes, no test tokens. What it does publish, and what a
+# developer actually needs on this platform, is three first-party rehearsal
+# tools: a controllable mock of the Firebolt platform, a metadata feed
+# validator, and a physical development-device programme with a certification
+# lab. All three are recorded with the URL that was fetched and its status.
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://docs.developer.comcast.com/docs/how-to-use-mock-firebolt,
+  https://docs.developer.comcast.com/docs/validate-your-metadata-feed,
+  https://docs.developer.comcast.com/docs/test-suite-implementations,
+  https://docs.developer.comcast.com/docs/certification-lab (all HTTP 200,
+  fetched 2026-09-05)
+provider: Comcast
+providerId: comcast
+test_keys: false
+test_mode: false
+test_values_published: false
+test_values_note: >-
+  No test cards, test accounts, test tokens or fixture identifiers are published.
+  This is not a transactional API; there is nothing of that shape to publish.
+environments:
+  - id: mock-firebolt
+    name: Mock Firebolt
+    kind: local mock / reverse proxy
+    docs: https://docs.developer.comcast.com/docs/how-to-use-mock-firebolt
+    repository: https://github.com/rdkcentral/mock-firebolt
+    repository_status: 200
+    license: Apache-2.0
+    install: clone the repository and run the local server (Node.js)
+    description: >-
+      A controllable mock Firebolt OS that an app connects to instead of a real
+      device, and which can also act as a reverse proxy to a real Firebolt OS
+      running on real hardware.
+    capabilities_documented:
+      - Return arbitrary values for any Firebolt method ("mock overrides").
+      - Make an STB answer as if it were a TV, and vice versa.
+      - Vary accessibility and advertising settings without a device.
+      - Emit events on demand to exercise app event handling.
+      - Return errors from the Firebolt SDK on demand.
+      - Return slow responses to exercise timeout handling.
+      - Test deep links (navigateTo).
+      - >-
+        Validate that method invocations are correct — the shipped SDK does not
+        validate parameters, so Mock Firebolt is the only place a bad call is
+        caught.
+    note: >-
+      Comcast states explicitly that the standard Firebolt SDK has a set of
+      static built-in mock responses that are "not controllable or extensible" —
+      Mock Firebolt is the supported way to rehearse.
+  - id: metadata-validator
+    name: Metadata Validator
+    kind: hosted validation service
+    url: https://developer.ott-highway.comcast.com/feedvalidator
+    url_status: 200
+    docs: https://docs.developer.comcast.com/docs/validate-your-metadata-feed
+    description: >-
+      Scans a Golden Media RSS (GMRSS) test feed for syntax errors against the
+      platform's supported program types, before the feed is submitted to Open
+      Ingest for real.
+    limits:
+      items_per_check: 4
+    dry_run_for: comcast:open-ingest-api
+  - id: firebolt-certification-app
+    name: Firebolt Certification App (FCA)
+    kind: conformance test harness
+    repository: https://github.com/rdkcentral/firebolt-certification-app
+    license: Apache-2.0
+    docs: https://docs.developer.comcast.com/docs/test-suite-implementations
+    description: >-
+      An application used to make and validate Firebolt calls on devices capable
+      of running Lightning/HTML5 applications against a given version of the
+      Firebolt API specification.
+  - id: development-devices
+    name: X1 Platform Development Devices
+    kind: physical hardware programme
+    docs: https://docs.developer.comcast.com/docs/platform-development-devices
+    description: >-
+      Loaned X1 development hardware that runs on the developer's local network.
+      Notably these devices can resolve IPv4, while production set-top boxes are
+      IPv6-only — so a development device is a more permissive environment than
+      production, and Comcast says so.
+    gotcha: >-
+      Production X1 boxes are IPv6-ONLY. An app, its ad stack, its CDN and every
+      third-party service it calls must be reachable over IPv6 or it will not
+      work in the field, even though it worked on the development device.
+      Source: https://docs.developer.comcast.com/docs/accessing-the-network
+  - id: certification-lab
+    name: Certification Lab
+    kind: pre-launch certification
+    docs: https://docs.developer.comcast.com/docs/certification-lab
+    description: >-
+      Comcast-run certification an app must pass before staged deployment
+      begins. See lifecycle/comcast-lifecycle.yml for the release process.
+access:
+  self_serve: partial
+  note: >-
+    Mock Firebolt, the Certification App and the Metadata Validator are openly
+    reachable. Development devices, the certification lab and Open Ingest
+    credentials are all partner-gated and arranged through a partner manager.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

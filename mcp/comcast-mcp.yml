@@ -1,0 +1,2206 @@
+# Comcast — MCP posture
+#
+# NO MCP SERVER EXISTS. Everything below the deployment block is a derived
+# candidate showing what one would contain, marked status: candidate.
+generated: '2026-09-05'
+method: derived
+status: candidate
+source: openrpc/comcast-firebolt-{core,manage,discovery}-openrpc.json v1.7.0 (fetched 2026-09-05)
+provider: Comcast
+providerId: comcast
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: searched
+server_published: false
+search_note: 'Searched 2026-09-05 for an official Comcast or Firebolt MCP server: the docs host, the 351-entry
+  llms.txt (zero occurrences of "MCP", "Model Context" or "agent"), https://developer.comcast.com/mcp
+  (SPA shell, no server), mcp.comcast.com (DNS does not resolve), and the Comcast and rdkcentral GitHub
+  organizations. Nothing found. mode: none — this file is a DERIVED CANDIDATE, not a server Comcast ships.'
+name_collision_warning: A search for "Firebolt MCP server" returns github.com/firebolt-db/mcp-server and
+  firebolt.io. That is Firebolt Analytics, a cloud data warehouse — a DIFFERENT company with no relationship
+  to Comcast. It must never be wired into this record. Same class of trap as the unscoped `firebolt-openrpc`
+  npm placeholder noted in packages/.
+candidate_note: 'If Comcast were to expose Firebolt as MCP tools, the contract already supplies everything
+  an MCP server needs: each method name is a tool name, its OpenRPC params schema is the tool inputSchema
+  verbatim, and its capability URNs are the authorization the tool would need. The 97 event methods are
+  subscriptions rather than callable tools and would map to MCP notifications, not tools; they are marked
+  kind: event below. IMPORTANT CAVEAT: Firebolt is an ON-DEVICE JSON-RPC interface between an app and
+  a set-top box, not a network API. There is no remote endpoint for an agent to reach, which is why mode
+  is none rather than unknown.'
+coverage:
+  methods_total: 330
+  read: 190
+  write: 43
+  event: 97
+  modules: 35
+candidate_tools:
+- sdk: core
+  module: Accessibility
+  tools:
+  - tool: Accessibility.closedCaptions
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: Get the user's preferred closed-captions settings
+  - tool: Accessibility.closedCaptionsSettings
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: Get the user's preferred closed-captions settings
+  - tool: Accessibility.highContrastUI
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:highcontrastui
+    summary: The user's preference for a high-contrast UI
+  - tool: Accessibility.voiceGuidance
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: Get the user's preferred voice guidance settings
+  - tool: Accessibility.voiceGuidanceSettings
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: Get the user's preferred voice guidance settings
+  - tool: Accessibility.audioDescriptionSettings
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:audiodescriptions
+    summary: Get the user's preferred audio description settings
+  - tool: Accessibility.onClosedCaptionsSettingsChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: Get the user's preferred closed-captions settings
+  - tool: Accessibility.onHighContrastUIChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:highcontrastui
+    summary: The user's preference for a high-contrast UI
+  - tool: Accessibility.onVoiceGuidanceSettingsChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: Get the user's preferred voice guidance settings
+  - tool: Accessibility.onAudioDescriptionSettingsChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:audiodescriptions
+    summary: Get the user's preferred audio description settings
+  tool_count: 10
+- sdk: core
+  module: Account
+  tools:
+  - tool: Account.id
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:account:id
+    summary: Get the platform back-office account identifier
+  - tool: Account.uid
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:account:uid
+    summary: Gets a unique id for the current app & account
+  tool_count: 2
+- sdk: core
+  module: Advertising
+  tools:
+  - tool: Advertising.config
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:configuration
+    summary: Build configuration object for Ad Framework initialization
+  - tool: Advertising.policy
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:policy
+    summary: Get the advertising privacy and playback policy
+  - tool: Advertising.advertisingId
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:identifier
+    summary: Get the IAB compliant identifier for advertising (IFA). It is recommended to use the IFA
+      to manage advertising related activities while resp
+  - tool: Advertising.deviceAttributes
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:configuration
+    summary: Get the device advertising device attributes
+  - tool: Advertising.appBundleId
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:configuration
+    summary: Get the App's Bundle ID
+  - tool: Advertising.onPolicyChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:policy
+    summary: Get the advertising privacy and playback policy
+  tool_count: 6
+- sdk: core
+  module: Authentication
+  tools:
+  - tool: Authentication.token
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:token:platform
+    summary: Get a specific `type` of authentication token
+  - tool: Authentication.device
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:token:device
+    summary: Get a device token scoped to the current app.
+  - tool: Authentication.session
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:token:session
+    summary: Get a destributor session token.
+  - tool: Authentication.root
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:token:root
+    summary: Get a root device token.
+  tool_count: 4
+- sdk: core
+  module: Capabilities
+  tools:
+  - tool: Capabilities.supported
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:info
+    summary: Returns whether the platform supports the passed capability.
+  - tool: Capabilities.available
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:info
+    summary: Returns whether a capability is available now.
+  - tool: Capabilities.permitted
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:info
+    summary: Returns whether or not the platform operator has granted the app with the provided capability
+      and role.
+  - tool: Capabilities.granted
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:info
+    summary: Returns whether or not the user has granted the app with the provided capability and role.
+  - tool: Capabilities.info
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:info
+    summary: Returns an array of CapabilityInfo objects for the provided capabilities.
+  - tool: Capabilities.request
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:request
+    summary: Requests grants for all capability/role combinations in the roles array.
+  - tool: Capabilities.onAvailable
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:info
+    summary: Listens for all App permitted capabilities to become available.
+  - tool: Capabilities.onUnavailable
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:info
+    summary: Listens for all App permitted capabilities to become unavailable.
+  - tool: Capabilities.onGranted
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:info
+    summary: Listens for all App permitted capabilities to become granted.
+  - tool: Capabilities.onRevoked
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:capabilities:info
+    summary: Listens for all App permitted capabilities to become revoked.
+  tool_count: 10
+- sdk: core
+  module: HDMIInput
+  tools:
+  - tool: HDMIInput.ports
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Retrieve a list of HDMI input ports.
+  - tool: HDMIInput.port
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Retrieve a specific HDMI input port.
+  - tool: HDMIInput.onConnectionChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Notification for when any HDMI port has a connection physically engaged or disengaged.
+  - tool: HDMIInput.onSignalChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Notification for when any HDMI port has it's signal status changed.
+  - tool: HDMIInput.lowLatencyMode
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for the low latency mode setting.
+  - tool: HDMIInput.onAutoLowLatencyModeSignalChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Notification for changes to ALLM status of any input device.
+  - tool: HDMIInput.autoLowLatencyModeCapable
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port auto low latency mode setting.
+  - tool: HDMIInput.edidVersion
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port's active EDID version.
+  - tool: HDMIInput.onLowLatencyModeChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for the low latency mode setting.
+  - tool: HDMIInput.onAutoLowLatencyModeCapableChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port auto low latency mode setting.
+  - tool: HDMIInput.onEdidVersionChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port's active EDID version.
+  tool_count: 11
+- sdk: core
+  module: Device
+  tools:
+  - tool: Device.id
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:id
+    summary: Get the platform back-office device identifier
+  - tool: Device.distributor
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:distributor
+    summary: Get the name of the entity which is distributing the current device. There can be multiple
+      distributors which distribute the same device mod
+  - tool: Device.platform
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: Get a platform identifier for the device. This API should be used to correlate metrics on
+      the device only and cannot be guaranteed to have c
+  - tool: Device.uid
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:uid
+    summary: Gets a unique id for the current app & device
+  - tool: Device.type
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: Get the device type
+  - tool: Device.model
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:model
+    summary: Get the manufacturer designated model of the device
+  - tool: Device.sku
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:sku
+    summary: Get the device sku
+  - tool: Device.make
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:make
+    summary: Get the manufacturer of the device model
+  - tool: Device.version
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: Get the SDK, OS and other version info
+  - tool: Device.hdcp
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: 'Get the negotiated HDCP profiles for a connected device. '
+  - tool: Device.hdr
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: Get the negotiated HDR formats for the connected display and device
+  - tool: Device.audio
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: 'Get the supported audio profiles for the connected devices. '
+  - tool: Device.screenResolution
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: 'Get the resolution for the graphical surface of the app. '
+  - tool: Device.videoResolution
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: 'Get the maximum supported video resolution of the currently connected device and display. '
+  - tool: Device.name
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:name
+    summary: The human readable name of the device
+  - tool: Device.onDeviceNameChanged
+    kind: event
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:device:name
+    summary: Get the human readable name of the device
+  - tool: Device.network
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:network:status
+    summary: Get the current network status and type
+  - tool: Device.onNameChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:name
+    summary: The human readable name of the device
+  - tool: Device.onHdcpChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: 'Get the negotiated HDCP profiles for a connected device. '
+  - tool: Device.onHdrChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: Get the negotiated HDR formats for the connected display and device
+  - tool: Device.onAudioChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: 'Get the supported audio profiles for the connected devices. '
+  - tool: Device.onScreenResolutionChanged
+    kind: event
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: 'Get the resolution for the graphical surface of the app. '
+  - tool: Device.onVideoResolutionChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:info
+    summary: 'Get the maximum supported video resolution of the currently connected device and display. '
+  - tool: Device.onNetworkChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:network:status
+    summary: Get the current network status and type
+  tool_count: 24
+- sdk: core
+  module: Discovery
+  tools:
+  - tool: Discovery.policy
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:policy
+    summary: Get the discovery policy
+  - tool: Discovery.entityInfo
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:discovery:entity-info
+    summary: Provide information about a program entity and its available watchable assets, such as entitlement
+      status and price, via either a push or pu
+  - tool: Discovery.purchasedContent
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:discovery:purchased-content
+    summary: Provide a list of purchased content for the authenticated account, such as rentals and electronic
+      sell through purchases.
+  - tool: Discovery.watched
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:watched
+    summary: Notify the platform that content was partially or completely watched
+  - tool: Discovery.watchNext
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:watch-next
+    summary: Suggest a call-to-action for this app on the platform home screen
+  - tool: Discovery.entitlements
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:discovery:content-access
+    summary: Inform the platform of the users latest entitlements w/in this app.
+  - tool: Discovery.contentAccess
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:content-access
+    summary: 'Inform the platform of what content the user can access either by discovering it or consuming
+      it. Availabilities determine which content is '
+  - tool: Discovery.clearContentAccess
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:content-access
+    summary: 'Clear both availabilities and entitlements from the subscriber. This is equivalent of calling
+      `Discovery.contentAccess({ availabilities: [],'
+  - tool: Discovery.launch
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:launch
+    summary: 'Launch or foreground the specified app, and optionally instructs it to navigate to the specified
+      user action. '
+  - tool: Discovery.onNavigateTo
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:navigate-to
+    summary: listen to `navigateTo` events
+  - tool: Discovery.signIn
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:sign-in-status
+    summary: 'Inform the platform that your user is signed in, for increased visibility in search & discovery.
+      Sign-in state is used separately from what '
+  - tool: Discovery.signOut
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:sign-in-status
+    summary: Inform the platform that your user has signed out. See `Discovery.signIn` for more details
+      on how the sign-in state is used.signOut will NOT
+  - tool: Discovery.userInterest
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:interest
+    summary: Send an entity that the user has expressed interest in to the platform.
+  - tool: Discovery.onRequestUserInterest
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:interest
+    summary: Provide information about the entity currently displayed or selected on the screen.
+  - tool: Discovery.onPolicyChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:policy
+    summary: Get the discovery policy
+  - tool: Discovery.onPullEntityInfo
+    kind: event
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:discovery:entity-info
+    summary: Provide information about a program entity and its available watchable assets, such as entitlement
+      status and price, via either a push or pu
+  - tool: Discovery.onPullPurchasedContent
+    kind: event
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:discovery:purchased-content
+    summary: Provide a list of purchased content for the authenticated account, such as rentals and electronic
+      sell through purchases.
+  - tool: Discovery.userInterestResponse
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:interest
+    summary: Internal API for .onRequestUserInterest Provider to send back response.
+  - tool: Discovery.userInterestError
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:interest
+    summary: Internal API for .onRequestUserInterest Provider to send back error.
+  tool_count: 19
+- sdk: core
+  module: Internal
+  tools:
+  - tool: Internal.initialize
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:initialize
+    summary: Initialize the SDK / FEE session.
+  tool_count: 1
+- sdk: core
+  module: Keyboard
+  tools:
+  - tool: Keyboard.email
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Prompt the user for their email address with a simplified list of choices.
+  - tool: Keyboard.password
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Show the password entry keyboard, with typing obfuscated from visibility
+  - tool: Keyboard.standard
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Show the standard platform keyboard, and return the submitted value
+  tool_count: 3
+- sdk: core
+  module: Lifecycle
+  tools:
+  - tool: Lifecycle.ready
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:ready
+    summary: Notify the platform that the app is ready
+  - tool: Lifecycle.close
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:state
+    summary: Request that the platform move your app out of focus
+  - tool: Lifecycle.finished
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:state
+    summary: Notify the platform that the app is done unloading
+  - tool: Lifecycle.state
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:state
+    summary: Get the current state of the app. This function is **synchronous**.
+  - tool: Lifecycle.onInactive
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:state
+    summary: Listen to the inactive event
+  - tool: Lifecycle.onForeground
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:state
+    summary: Listen to the foreground event
+  - tool: Lifecycle.onBackground
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:state
+    summary: Listen to the background event
+  - tool: Lifecycle.onSuspended
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:state
+    summary: Listen to the suspended event
+  - tool: Lifecycle.onUnloading
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:state
+    summary: Listen to the unloading event
+  tool_count: 9
+- sdk: core
+  module: Localization
+  tools:
+  - tool: Localization.locality
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locality
+    summary: Get the locality/city the device is located in
+  - tool: Localization.postalCode
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:postal-code
+    summary: Get the postal code the device is located in
+  - tool: Localization.countryCode
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:country-code
+    summary: Get the ISO 3166-1 alpha-2 code for the country device is located in
+  - tool: Localization.language
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: Get the ISO 639 1/2 code for the preferred language
+  - tool: Localization.preferredAudioLanguages
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: A prioritized list of ISO 639 1/2 codes for the preferred audio languages on this device.
+  - tool: Localization.locale
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locale
+    summary: Get the *full* BCP 47 code, including script, region, variant, etc., for the preferred langauage/locale
+  - tool: Localization.latlon
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:location
+    summary: Get the approximate latitude and longitude coordinates of the device location
+  - tool: Localization.additionalInfo
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:additional-info
+    summary: Get any platform-specific localization information
+  - tool: Localization.onLocalityChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locality
+    summary: Get the locality/city the device is located in
+  - tool: Localization.onPostalCodeChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:postal-code
+    summary: Get the postal code the device is located in
+  - tool: Localization.onCountryCodeChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:country-code
+    summary: Get the ISO 3166-1 alpha-2 code for the country device is located in
+  - tool: Localization.onLanguageChanged
+    kind: event
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: Get the ISO 639 1/2 code for the preferred language
+  - tool: Localization.onPreferredAudioLanguagesChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: A prioritized list of ISO 639 1/2 codes for the preferred audio languages on this device.
+  - tool: Localization.onLocaleChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locale
+    summary: Get the *full* BCP 47 code, including script, region, variant, etc., for the preferred langauage/locale
+  tool_count: 14
+- sdk: core
+  module: Metrics
+  tools:
+  - tool: Metrics.ready
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:general
+    summary: Inform the platform that your app is minimally usable. This method is called automatically
+      by `Lifecycle.ready()`
+  - tool: Metrics.signIn
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:general
+    summary: Log a sign in event, called by Discovery.signIn().
+  - tool: Metrics.signOut
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:general
+    summary: Log a sign out event, called by Discovery.signOut().
+  - tool: Metrics.startContent
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:general
+    summary: Inform the platform that your user has started content.
+  - tool: Metrics.stopContent
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:general
+    summary: Inform the platform that your user has stopped content.
+  - tool: Metrics.page
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:general
+    summary: Inform the platform that your user has navigated to a page or view.
+  - tool: Metrics.action
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:general
+    summary: Inform the platform of something not covered by other Metrics APIs.
+  - tool: Metrics.error
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:general
+    summary: Inform the platform of an error that has occured in your app.
+  - tool: Metrics.mediaLoadStart
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when setting the URL of a media asset to play, in order to infer load time.
+  - tool: Metrics.mediaPlay
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when media playback should start due to autoplay, user-initiated play, or unpausing.
+  - tool: Metrics.mediaPlaying
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when media playback actually starts due to autoplay, user-initiated play, unpausing,
+      or recovering from a buffering interuption.
+  - tool: Metrics.mediaPause
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when media playback will pause due to an intentional pause operation.
+  - tool: Metrics.mediaWaiting
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when media playback will halt due to a network, buffer, or other unintentional constraint.
+  - tool: Metrics.mediaProgress
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called every 60 seconds as media playback progresses.
+  - tool: Metrics.mediaSeeking
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when a seek is initiated during media playback.
+  - tool: Metrics.mediaSeeked
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when a seek is completed during media playback.
+  - tool: Metrics.mediaRateChange
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when the playback rate of media is changed.
+  - tool: Metrics.mediaRenditionChange
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when the playback rendition (e.g. bitrate, dimensions, profile, etc) is changed.
+  - tool: Metrics.mediaEnded
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:media
+    summary: Called when playback has stopped because the end of the media was reached.
+  - tool: Metrics.appInfo
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:general
+    summary: Inform the platform about an app's build info.
+  tool_count: 20
+- sdk: core
+  module: Parameters
+  tools:
+  - tool: Parameters.initialization
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:lifecycle:state
+    summary: Returns any initialization parameters for the app, e.g. initialial `NavigationIntent`.
+  tool_count: 1
+- sdk: core
+  module: Profile
+  tools:
+  - tool: Profile.approveContentRating
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:approve:content
+    summary: Verifies that the current profile should have access to mature/adult content.
+  - tool: Profile.approvePurchase
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:approve:purchase
+    summary: Verifies that the current profile should have access to making purchases.
+  - tool: Profile.flags
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:profile:flags
+    summary: Get a map of profile flags for the current session.
+  tool_count: 3
+- sdk: core
+  module: SecondScreen
+  tools:
+  - tool: SecondScreen.protocols
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:secondscreen:protocol
+    summary: Get the supported second screen discovery protocols
+  - tool: SecondScreen.device
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:protocol:dial
+    summary: Get the broadcasted id for the device
+  - tool: SecondScreen.friendlyName
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:protocol:dial
+    summary: Get the broadcasted friendly name for the device
+  - tool: SecondScreen.onLaunchRequest
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:protocol:dial
+    summary: Listen to the launchRequest event
+  - tool: SecondScreen.onCloseRequest
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:protocol:dial
+    summary: Listen to the closeRequest event
+  - tool: SecondScreen.onFriendlyNameChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:protocol:dial
+    summary: Get the broadcasted friendly name for the device
+  tool_count: 6
+- sdk: core
+  module: SecureStorage
+  tools:
+  - tool: SecureStorage.get
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:storage:secure
+    summary: Get stored value by key
+  - tool: SecureStorage.set
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:storage:secure
+    summary: Set or update a secure data value
+  - tool: SecureStorage.remove
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:storage:secure
+    summary: Remove a secure data value
+  - tool: SecureStorage.clear
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:storage:secure
+    summary: Clears all the secure data values
+  tool_count: 4
+- sdk: manage
+  module: Localization
+  tools:
+  - tool: Localization.locality
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locality
+    summary: Get the locality/city the device is located in
+  - tool: Localization.postalCode
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:postal-code
+    summary: Get the postal code the device is located in
+  - tool: Localization.countryCode
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:country-code
+    summary: Get the ISO 3166-1 alpha-2 code for the country device is located in
+  - tool: Localization.language
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: Get the ISO 639 1/2 code for the preferred language
+  - tool: Localization.preferredAudioLanguages
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: A prioritized list of ISO 639 1/2 codes for the preferred audio languages on this device.
+  - tool: Localization.locale
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locale
+    summary: Get the *full* BCP 47 code, including script, region, variant, etc., for the preferred langauage/locale
+  - tool: Localization.additionalInfo
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:additional-info
+    summary: Get any platform-specific localization information
+  - tool: Localization.addAdditionalInfo
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:additional-info
+    summary: Add any platform-specific localization information in key/value pair
+  - tool: Localization.removeAdditionalInfo
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:additional-info
+    summary: Remove any platform-specific localization information from map
+  - tool: Localization.timeZone
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:time-zone
+    summary: Set the IANA timezone for the device
+  - tool: Localization.onLocalityChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locality
+    summary: Get the locality/city the device is located in
+  - tool: Localization.onPostalCodeChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:postal-code
+    summary: Get the postal code the device is located in
+  - tool: Localization.onCountryCodeChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:country-code
+    summary: Get the ISO 3166-1 alpha-2 code for the country device is located in
+  - tool: Localization.onLanguageChanged
+    kind: event
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: Get the ISO 639 1/2 code for the preferred language
+  - tool: Localization.onPreferredAudioLanguagesChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: A prioritized list of ISO 639 1/2 codes for the preferred audio languages on this device.
+  - tool: Localization.onLocaleChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locale
+    summary: Get the *full* BCP 47 code, including script, region, variant, etc., for the preferred langauage/locale
+  - tool: Localization.onTimeZoneChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:time-zone
+    summary: Set the IANA timezone for the device
+  - tool: Localization.setLocality
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locality
+    summary: Get the locality/city the device is located in
+  - tool: Localization.setPostalCode
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:postal-code
+    summary: Get the postal code the device is located in
+  - tool: Localization.setCountryCode
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:country-code
+    summary: Get the ISO 3166-1 alpha-2 code for the country device is located in
+  - tool: Localization.setLanguage
+    kind: write
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: Get the ISO 639 1/2 code for the preferred language
+  - tool: Localization.setPreferredAudioLanguages
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:language
+    summary: A prioritized list of ISO 639 1/2 codes for the preferred audio languages on this device.
+  - tool: Localization.setLocale
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:locale
+    summary: Get the *full* BCP 47 code, including script, region, variant, etc., for the preferred langauage/locale
+  - tool: Localization.setTimeZone
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:localization:time-zone
+    summary: Set the IANA timezone for the device
+  tool_count: 24
+- sdk: manage
+  module: Metrics
+  tools:
+  - tool: Metrics.event
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:metrics:distributor
+    summary: Inform the platform of 1st party distributor metrics.
+  tool_count: 1
+- sdk: manage
+  module: Wifi
+  tools:
+  - tool: Wifi.scan
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:protocol:wifi
+    summary: Scan available wifi networks in the location.
+  - tool: Wifi.connect
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:protocol:wifi
+    summary: Connect the device to the specified SSID.
+  - tool: Wifi.disconnect
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:protocol:wifi
+    summary: Disconnect the device if connected via WIFI.
+  - tool: Wifi.wps
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:protocol:wifi
+    summary: Connect to WPS
+  tool_count: 4
+- sdk: manage
+  module: ClosedCaptions
+  tools:
+  - tool: ClosedCaptions.enabled
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: Whether or not closed-captions are enabled.
+  - tool: ClosedCaptions.fontFamily
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font family for displaying closed-captions.
+  - tool: ClosedCaptions.fontSize
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font size for displaying closed-captions.
+  - tool: ClosedCaptions.fontColor
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font color for displaying closed-captions.
+  - tool: ClosedCaptions.fontEdge
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font edge style for displaying closed-captions.
+  - tool: ClosedCaptions.fontEdgeColor
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font edge color for displaying closed-captions.
+  - tool: ClosedCaptions.fontOpacity
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred opacity for displaying closed-captions characters.
+  - tool: ClosedCaptions.backgroundColor
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred background color for displaying closed-captions, .
+  - tool: ClosedCaptions.backgroundOpacity
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred opacity for displaying closed-captions backgrounds.
+  - tool: ClosedCaptions.textAlign
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred horizontal alignment for displaying closed-captions characters.
+  - tool: ClosedCaptions.textAlignVertical
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred horizontal alignment for displaying closed-captions characters.
+  - tool: ClosedCaptions.windowColor
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred window color for displaying closed-captions, .
+  - tool: ClosedCaptions.windowOpacity
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred window opacity for displaying closed-captions backgrounds.
+  - tool: ClosedCaptions.preferredLanguages
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: A prioritized list of ISO 639-2/B codes for the preferred closed captions languages on this
+      device.
+  - tool: ClosedCaptions.onEnabledChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: Whether or not closed-captions are enabled.
+  - tool: ClosedCaptions.onFontFamilyChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font family for displaying closed-captions.
+  - tool: ClosedCaptions.onFontSizeChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font size for displaying closed-captions.
+  - tool: ClosedCaptions.onFontColorChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font color for displaying closed-captions.
+  - tool: ClosedCaptions.onFontEdgeChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font edge style for displaying closed-captions.
+  - tool: ClosedCaptions.onFontEdgeColorChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font edge color for displaying closed-captions.
+  - tool: ClosedCaptions.onFontOpacityChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred opacity for displaying closed-captions characters.
+  - tool: ClosedCaptions.onBackgroundColorChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred background color for displaying closed-captions, .
+  - tool: ClosedCaptions.onBackgroundOpacityChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred opacity for displaying closed-captions backgrounds.
+  - tool: ClosedCaptions.onTextAlignChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred horizontal alignment for displaying closed-captions characters.
+  - tool: ClosedCaptions.onTextAlignVerticalChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred horizontal alignment for displaying closed-captions characters.
+  - tool: ClosedCaptions.onWindowColorChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred window color for displaying closed-captions, .
+  - tool: ClosedCaptions.onWindowOpacityChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred window opacity for displaying closed-captions backgrounds.
+  - tool: ClosedCaptions.onPreferredLanguagesChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: A prioritized list of ISO 639-2/B codes for the preferred closed captions languages on this
+      device.
+  - tool: ClosedCaptions.setEnabled
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: Whether or not closed-captions are enabled.
+  - tool: ClosedCaptions.setFontFamily
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font family for displaying closed-captions.
+  - tool: ClosedCaptions.setFontSize
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font size for displaying closed-captions.
+  - tool: ClosedCaptions.setFontColor
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font color for displaying closed-captions.
+  - tool: ClosedCaptions.setFontEdge
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font edge style for displaying closed-captions.
+  - tool: ClosedCaptions.setFontEdgeColor
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred font edge color for displaying closed-captions.
+  - tool: ClosedCaptions.setFontOpacity
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred opacity for displaying closed-captions characters.
+  - tool: ClosedCaptions.setBackgroundColor
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred background color for displaying closed-captions, .
+  - tool: ClosedCaptions.setBackgroundOpacity
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred opacity for displaying closed-captions backgrounds.
+  - tool: ClosedCaptions.setTextAlign
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred horizontal alignment for displaying closed-captions characters.
+  - tool: ClosedCaptions.setTextAlignVertical
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred horizontal alignment for displaying closed-captions characters.
+  - tool: ClosedCaptions.setWindowColor
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred window color for displaying closed-captions, .
+  - tool: ClosedCaptions.setWindowOpacity
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: The preferred window opacity for displaying closed-captions backgrounds.
+  - tool: ClosedCaptions.setPreferredLanguages
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:closedcaptions
+    summary: A prioritized list of ISO 639-2/B codes for the preferred closed captions languages on this
+      device.
+  tool_count: 42
+- sdk: manage
+  module: AudioDescriptions
+  tools:
+  - tool: AudioDescriptions.enabled
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:audiodescriptions
+    summary: Whether or not audio-descriptions are enabled.
+  - tool: AudioDescriptions.onEnabledChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:audiodescriptions
+    summary: Whether or not audio-descriptions are enabled.
+  - tool: AudioDescriptions.setEnabled
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:audiodescriptions
+    summary: Whether or not audio-descriptions are enabled.
+  tool_count: 3
+- sdk: manage
+  module: VoiceGuidance
+  tools:
+  - tool: VoiceGuidance.enabled
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: Whether or not voice-guidance is enabled.
+  - tool: VoiceGuidance.navigationHints
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: The user's preference for whether additional navigation hints should be synthesized.
+  - tool: VoiceGuidance.rate
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: The rate at which voice guidance speech will be read back to the user.
+  - tool: VoiceGuidance.speed
+    kind: read
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: The speed at which voice guidance speech will be read back to the user.
+  - tool: VoiceGuidance.onEnabledChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: Whether or not voice-guidance is enabled.
+  - tool: VoiceGuidance.onNavigationHintsChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: The user's preference for whether additional navigation hints should be synthesized.
+  - tool: VoiceGuidance.onRateChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: The rate at which voice guidance speech will be read back to the user.
+  - tool: VoiceGuidance.onSpeedChanged
+    kind: event
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: The speed at which voice guidance speech will be read back to the user.
+  - tool: VoiceGuidance.setEnabled
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: Whether or not voice-guidance is enabled.
+  - tool: VoiceGuidance.setNavigationHints
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: The user's preference for whether additional navigation hints should be synthesized.
+  - tool: VoiceGuidance.setRate
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: The rate at which voice guidance speech will be read back to the user.
+  - tool: VoiceGuidance.setSpeed
+    kind: write
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:accessibility:voiceguidance
+    summary: The speed at which voice guidance speech will be read back to the user.
+  tool_count: 12
+- sdk: manage
+  module: Device
+  tools:
+  - tool: Device.name
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:name
+    summary: The human readable name of the device
+  - tool: Device.onDeviceNameChanged
+    kind: event
+    deprecated: true
+    capabilities:
+    - xrn:firebolt:capability:device:name
+    summary: Get the human readable name of the device
+  - tool: Device.provision
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:account:id
+    - xrn:firebolt:capability:device:distributor
+    - xrn:firebolt:capability:device:id
+    summary: Used by a distributor to push provision info to firebolt.
+  - tool: Device.onNameChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:name
+    summary: The human readable name of the device
+  - tool: Device.setName
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:device:name
+    summary: The human readable name of the device
+  tool_count: 5
+- sdk: manage
+  module: UserGrants
+  tools:
+  - tool: UserGrants.app
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:grants:state
+    summary: Get all granted and denied user grants for the given app
+  - tool: UserGrants.device
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:grants:state
+    summary: Get all granted and denied user grants for the device
+  - tool: UserGrants.capability
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:grants:state
+    summary: Get all granted and denied user grants for the given capability
+  - tool: UserGrants.grant
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:grants:state
+    summary: Grants a given capability to a specific app, if appropriate. Calling this results in a persisted
+      active grant that lasts for the duration of
+  - tool: UserGrants.deny
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:grants:state
+    summary: Denies a given capability, to a specific app if appropriate. Calling this results in a persisted
+      Denied Grant that lasts for the duration of
+  - tool: UserGrants.clear
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:grants:state
+    summary: Clears the grant for a given capability, to a specific app if appropriate. Calling this results
+      in a persisted Denied Grant that lasts for t
+  - tool: UserGrants.request
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:grants:state
+    summary: Requests Firebolt to carry out a set of user grants for a given application such that the
+      user grant provider is notified or an existing use
+  tool_count: 7
+- sdk: manage
+  module: Privacy
+  tools:
+  - tool: Privacy.allowResumePoints
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows resume points for content to show in the main experience
+  - tool: Privacy.allowUnentitledResumePoints
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows resume points for content from unentitled providers to show in the
+      main experience
+  - tool: Privacy.allowWatchHistory
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their watch history from all sources to show in the main experience
+  - tool: Privacy.allowProductAnalytics
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their usage data can be used for analytics about the product
+  - tool: Privacy.allowPersonalization
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their usage data to be used for personalization and recommendations
+  - tool: Privacy.allowUnentitledPersonalization
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their usage data to be used for personalization and recommendations
+      for unentitled content
+  - tool: Privacy.allowRemoteDiagnostics
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their personal data to be included in diagnostic telemetry. This
+      also allows whether device logs can be remotely acc
+  - tool: Privacy.allowPrimaryContentAdTargeting
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows ads to be targeted to the user while watching content in the primary
+      experience
+  - tool: Privacy.allowPrimaryBrowseAdTargeting
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows ads to be targeted to the user while browsing in the primary experience
+  - tool: Privacy.allowAppContentAdTargeting
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows ads to be targeted to the user while watching content in apps
+  - tool: Privacy.allowACRCollection
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their automatic content recognition data to be collected
+  - tool: Privacy.allowCameraAnalytics
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows data from their camera to be used for Product Analytics
+  - tool: Privacy.settings
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Gets the allowed value for all privacy settings
+  - tool: Privacy.onAllowResumePointsChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows resume points for content to show in the main experience
+  - tool: Privacy.onAllowUnentitledResumePointsChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows resume points for content from unentitled providers to show in the
+      main experience
+  - tool: Privacy.onAllowWatchHistoryChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their watch history from all sources to show in the main experience
+  - tool: Privacy.onAllowProductAnalyticsChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their usage data can be used for analytics about the product
+  - tool: Privacy.onAllowPersonalizationChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their usage data to be used for personalization and recommendations
+  - tool: Privacy.onAllowUnentitledPersonalizationChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their usage data to be used for personalization and recommendations
+      for unentitled content
+  - tool: Privacy.onAllowRemoteDiagnosticsChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their personal data to be included in diagnostic telemetry. This
+      also allows whether device logs can be remotely acc
+  - tool: Privacy.onAllowPrimaryContentAdTargetingChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows ads to be targeted to the user while watching content in the primary
+      experience
+  - tool: Privacy.onAllowPrimaryBrowseAdTargetingChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows ads to be targeted to the user while browsing in the primary experience
+  - tool: Privacy.onAllowAppContentAdTargetingChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows ads to be targeted to the user while watching content in apps
+  - tool: Privacy.onAllowACRCollectionChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their automatic content recognition data to be collected
+  - tool: Privacy.onAllowCameraAnalyticsChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows data from their camera to be used for Product Analytics
+  - tool: Privacy.setAllowResumePoints
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows resume points for content to show in the main experience
+  - tool: Privacy.setAllowUnentitledResumePoints
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows resume points for content from unentitled providers to show in the
+      main experience
+  - tool: Privacy.setAllowWatchHistory
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their watch history from all sources to show in the main experience
+  - tool: Privacy.setAllowProductAnalytics
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their usage data can be used for analytics about the product
+  - tool: Privacy.setAllowPersonalization
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their usage data to be used for personalization and recommendations
+  - tool: Privacy.setAllowUnentitledPersonalization
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their usage data to be used for personalization and recommendations
+      for unentitled content
+  - tool: Privacy.setAllowRemoteDiagnostics
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their personal data to be included in diagnostic telemetry. This
+      also allows whether device logs can be remotely acc
+  - tool: Privacy.setAllowPrimaryContentAdTargeting
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows ads to be targeted to the user while watching content in the primary
+      experience
+  - tool: Privacy.setAllowPrimaryBrowseAdTargeting
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows ads to be targeted to the user while browsing in the primary experience
+  - tool: Privacy.setAllowAppContentAdTargeting
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows ads to be targeted to the user while watching content in apps
+  - tool: Privacy.setAllowACRCollection
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows their automatic content recognition data to be collected
+  - tool: Privacy.setAllowCameraAnalytics
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:privacy:settings
+    summary: Whether the user allows data from their camera to be used for Product Analytics
+  tool_count: 37
+- sdk: manage
+  module: Advertising
+  tools:
+  - tool: Advertising.skipRestriction
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:configuration
+    summary: Set the value for AdPolicy.skipRestriction
+  - tool: Advertising.resetIdentifier
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:identifier
+    summary: Resets a user's identifier in the ad platform so that the advertising id that apps get will
+      be a new value
+  - tool: Advertising.onSkipRestrictionChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:configuration
+    summary: Set the value for AdPolicy.skipRestriction
+  - tool: Advertising.setSkipRestriction
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:advertising:configuration
+    summary: Set the value for AdPolicy.skipRestriction
+  tool_count: 4
+- sdk: manage
+  module: Account
+  tools:
+  - tool: Account.session
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:token:account
+    summary: Used by a distributor to push Session token to firebolt.
+  tool_count: 1
+- sdk: manage
+  module: Keyboard
+  tools:
+  - tool: Keyboard.onRequestStandard
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Registers as a provider for when the user should be shown a standard keyboard.
+  - tool: Keyboard.onRequestPassword
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Registers as a provider for when the user should be shown a password keyboard, with dots
+      for each character entered.
+  - tool: Keyboard.onRequestEmail
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Registers as a provider for when the user should be shown a keyboard optimized for email
+      address entry.
+  - tool: Keyboard.standardFocus
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Internal API for Standard Provider to request focus for UX purposes.
+  - tool: Keyboard.passwordFocus
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Internal API for Password Provider to request focus for UX purposes.
+  - tool: Keyboard.emailFocus
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Internal API for Email Provider to request focus for UX purposes.
+  - tool: Keyboard.standardResponse
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Internal API for Standard Provider to send back response.
+  - tool: Keyboard.standardError
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Internal API for Standard Provider to send back error.
+  - tool: Keyboard.passwordResponse
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Internal API for Password Provider to send back response.
+  - tool: Keyboard.passwordError
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Internal API for Password Provider to send back error.
+  - tool: Keyboard.emailResponse
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Internal API for Email Provider to send back response.
+  - tool: Keyboard.emailError
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:input:keyboard
+    summary: Internal API for Email Provider to send back error.
+  tool_count: 12
+- sdk: manage
+  module: AcknowledgeChallenge
+  tools:
+  - tool: AcknowledgeChallenge.onRequestChallenge
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:usergrant:acknowledgechallenge
+    summary: Registers as a provider for when the user should be challenged in order to confirm access
+      to a capability
+  - tool: AcknowledgeChallenge.challengeFocus
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:usergrant:acknowledgechallenge
+    summary: Internal API for Challenge Provider to request focus for UX purposes.
+  - tool: AcknowledgeChallenge.challengeResponse
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:usergrant:acknowledgechallenge
+    summary: Internal API for Challenge Provider to send back response.
+  - tool: AcknowledgeChallenge.challengeError
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:usergrant:acknowledgechallenge
+    summary: Internal API for Challenge Provider to send back error.
+  tool_count: 4
+- sdk: manage
+  module: PinChallenge
+  tools:
+  - tool: PinChallenge.onRequestChallenge
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:usergrant:pinchallenge
+    summary: Registers as a provider for when the user should be challenged in order to confirm access
+      to a capability through a pin prompt
+  - tool: PinChallenge.challengeFocus
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:usergrant:pinchallenge
+    summary: Internal API for Challenge Provider to request focus for UX purposes.
+  - tool: PinChallenge.challengeResponse
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:usergrant:pinchallenge
+    summary: Internal API for Challenge Provider to send back response.
+  - tool: PinChallenge.challengeError
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:usergrant:pinchallenge
+    summary: Internal API for Challenge Provider to send back error.
+  tool_count: 4
+- sdk: manage
+  module: SecureStorage
+  tools:
+  - tool: SecureStorage.setForApp
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:storage:secure
+    summary: Set or update a secure data value for a specific app.
+  - tool: SecureStorage.removeForApp
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:storage:secure
+    summary: Removes single data value for a specific app.
+  - tool: SecureStorage.clearForApp
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:storage:secure
+    summary: Clears all the secure data values for a specific app
+  tool_count: 3
+- sdk: manage
+  module: Discovery
+  tools:
+  - tool: Discovery.onSignIn
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:sign-in-status
+    summary: Listen to events from all apps that call Discovery.signIn
+  - tool: Discovery.onSignOut
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:sign-in-status
+    summary: Listen to events from all apps that call Discovery.signOut
+  tool_count: 2
+- sdk: manage
+  module: HDMIInput
+  tools:
+  - tool: HDMIInput.ports
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Retrieve a list of HDMI input ports.
+  - tool: HDMIInput.port
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Retrieve a specific HDMI input port.
+  - tool: HDMIInput.open
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Opens the HDMI Port allowing it to be the active source device. Incase there is a different
+      HDMI portId already set as the active source, th
+  - tool: HDMIInput.close
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Closes the given HDMI Port if it is the current active source for HDMI Input. If there was
+      no active source, then there would no action take
+  - tool: HDMIInput.onConnectionChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Notification for when any HDMI port has a connection physically engaged or disengaged.
+  - tool: HDMIInput.onSignalChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Notification for when any HDMI port has it's signal status changed.
+  - tool: HDMIInput.lowLatencyMode
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for the low latency mode setting.
+  - tool: HDMIInput.onAutoLowLatencyModeSignalChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Notification for changes to ALLM status of any input device.
+  - tool: HDMIInput.autoLowLatencyModeCapable
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port auto low latency mode setting.
+  - tool: HDMIInput.edidVersion
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port's active EDID version.
+  - tool: HDMIInput.onLowLatencyModeChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for the low latency mode setting.
+  - tool: HDMIInput.onAutoLowLatencyModeCapableChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port auto low latency mode setting.
+  - tool: HDMIInput.onEdidVersionChanged
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port's active EDID version.
+  - tool: HDMIInput.setLowLatencyMode
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for the low latency mode setting.
+  - tool: HDMIInput.setAutoLowLatencyModeCapable
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port auto low latency mode setting.
+  - tool: HDMIInput.setEdidVersion
+    kind: write
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:inputs:hdmi
+    summary: Property for each port's active EDID version.
+  tool_count: 16
+- sdk: discovery
+  module: Content
+  tools:
+  - tool: Content.requestUserInterest
+    kind: read
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:interest
+    summary: Provide information about the entity currently displayed or selected on the screen.
+  - tool: Content.onUserInterest
+    kind: event
+    deprecated: null
+    capabilities:
+    - xrn:firebolt:capability:discovery:interest
+    summary: Provide information about the entity currently displayed or selected on the screen.
+  tool_count: 2
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

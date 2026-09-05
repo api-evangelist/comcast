@@ -1,0 +1,219 @@
+# Comcast — API lifecycle, versioning and deprecation
+#
+# The strongest lifecycle signal Comcast publishes is inside the contract, not
+# on a policy page: 20 of the 330 Firebolt methods carry an explicit
+# `deprecated` tag, and 17 of those name both the version they were deprecated
+# in and the method that replaces them. That is machine-readable deprecation,
+# and it is derived below verbatim from the OpenRPC documents in openrpc/.
+generated: '2026-09-05'
+method: derived
+source: >-
+  openrpc/comcast-firebolt-{core,manage,discovery}-openrpc.json v1.7.0;
+  https://docs.developer.comcast.com/docs/incident-priority-levels;
+  https://docs.developer.comcast.com/docs/app-deployment-process;
+  https://docs.developer.comcast.com/llms.txt (all fetched 2026-09-05)
+provider: Comcast
+providerId: comcast
+
+versioning:
+  scheme: semver
+  applies_to: the Firebolt API specification itself
+  current: 1.7.0
+  published_versions:
+    - version: 1.7.0
+      status: current
+      docs: https://docs.developer.comcast.com/docs/170
+    - version: 1.5.0
+      status: supported
+      docs: https://docs.developer.comcast.com/docs/150
+    - version: 1.0.0
+      status: supported
+      docs: https://docs.developer.comcast.com/docs/100
+    - version: 0.8.1
+      status: legacy
+      docs: https://docs.developer.comcast.com/docs/081
+  prerelease:
+    tag: v1.8.0-next.47
+    date: '2026-03-31'
+    source: https://github.com/rdkcentral/firebolt-apis/releases
+    note: Not promoted to the npm `latest` tag; npm latest is still 1.7.0 (2025-09-04).
+  legacy_track:
+    name: X1 JavaScript API ("Badger")
+    status: legacy, superseded by Firebolt
+    migration_guide: https://docs.developer.comcast.com/docs/badger-to-firebolt-reference
+    note: >-
+      Comcast keeps the full legacy reference published alongside a
+      Badger-to-Firebolt mapping table — a migration path, not a silent removal.
+
+deprecation_policy:
+  published_policy_page: false
+  sunset_header_rfc8594: false
+  in_contract: true
+  mechanism: >-
+    A `deprecated` tag on the method in the OpenRPC document, carrying x-since
+    (the version it was deprecated in) and, usually, x-alternative (the
+    replacement). Deprecated methods remain published and callable in 1.7.0;
+    none of the 20 has been removed from the current contract.
+  note: >-
+    There is no dated sunset policy, no Deprecation/Sunset response header and
+    no removal calendar. What exists is an in-contract marker plus a named
+    replacement, which is more than most providers ship and less than a policy.
+
+deprecated_operations:
+  count: 20
+  operations:
+    - method: Accessibility.closedCaptions
+      sdk: core
+      since: 0.6.0
+      replacement: Accessibility.closedCaptionsSettings()
+    - method: Accessibility.voiceGuidance
+      sdk: core
+      since: 0.6.0
+      replacement: Accessibility.voiceGuidanceSettings()
+    - method: Authentication.token
+      sdk: core
+      since: 0.9.0
+      replacement: 'Authentication module has individual methods for each token type.'
+    - method: Device.screenResolution
+      sdk: core
+      since: 1.4.0
+      replacement: 'Use non-Firebolt APIs specific to your platform, e.g. W3C APIs'
+    - method: Device.onScreenResolutionChanged
+      sdk: core
+      since: 1.4.0
+      replacement: 'Use non-Firebolt APIs specific to your platform, e.g. W3C APIs'
+    - method: Device.onDeviceNameChanged
+      sdk: core
+      since: 0.6.0
+      replacement: Device.name()
+    - method: Discovery.entitlements
+      sdk: core
+      since: 0.10.0
+      replacement: Discovery.contentAccess()
+    - method: Discovery.entityInfo
+      sdk: core
+      since: null
+      replacement: null
+    - method: Discovery.purchasedContent
+      sdk: core
+      since: null
+      replacement: null
+    - method: Discovery.onPullEntityInfo
+      sdk: core
+      since: null
+      replacement: null
+    - method: Discovery.onPullPurchasedContent
+      sdk: core
+      since: null
+      replacement: null
+    - method: Localization.language
+      sdk: core
+      since: 0.17.0
+      replacement: Localization.locale
+    - method: Localization.onLanguageChanged
+      sdk: core
+      since: 0.17.0
+      replacement: Localization.locale
+    - method: Localization.language
+      sdk: manage
+      since: 0.17.0
+      replacement: Localization.locale
+    - method: Localization.onLanguageChanged
+      sdk: manage
+      since: 0.17.0
+      replacement: Localization.locale
+    - method: Localization.setLanguage
+      sdk: manage
+      since: 0.17.0
+      replacement: Localization.locale
+    - method: VoiceGuidance.speed
+      sdk: manage
+      since: 1.5.0
+      replacement: VoiceGuidance.rate()
+    - method: VoiceGuidance.onSpeedChanged
+      sdk: manage
+      since: 1.5.0
+      replacement: VoiceGuidance.rate()
+    - method: VoiceGuidance.setSpeed
+      sdk: manage
+      since: 1.5.0
+      replacement: VoiceGuidance.rate()
+    - method: Device.onDeviceNameChanged
+      sdk: manage
+      since: 0.6.0
+      replacement: Device.name()
+  without_replacement:
+    count: 4
+    note: >-
+      The four Discovery pull methods carry the deprecated tag with neither
+      x-since nor x-alternative. An integrator on those methods has no published
+      migration target.
+
+sla:
+  published: true
+  kind: partner incident-response obligation
+  direction: >-
+    NOTE THE DIRECTION. This is not an availability commitment Comcast makes to
+    a partner; it is the response and resolution time Comcast REQUIRES OF the
+    partner for issues in the partner's app. It is the only dated SLA table on
+    the public developer surface.
+  source: https://docs.developer.comcast.com/docs/incident-priority-levels
+  tiers:
+    - priority: P0 - Critical
+      response_time: 30 minutes
+      resolution_time: 4 hours
+      definition: Essential features of the app do not work, or the app is completely unusable.
+    - priority: P1 - Urgent
+      response_time: 1 hour
+      resolution_time: 8 hours
+      definition: >-
+        Nonessential features do not work in a way that hinders proper app usage,
+        or issues that could weaken system integrity over time.
+    - priority: P2 - Important
+      response_time: 1 business day
+      resolution_time: 2 business days
+      definition: Problems that cause operational difficulties within the app.
+    - priority: P3 - Monitor
+      response_time: 2 business days
+      resolution_time: 1 week
+      definition: Problems that may cause minor operational difficulties, or general customer queries.
+    - priority: P4 - Information
+      response_time: 1 week
+      resolution_time: When commercially feasible
+      definition: Comments and suggestions on services, technical features, design, or other similar topics.
+
+release_process:
+  name: Staged app deployment
+  source: https://docs.developer.comcast.com/docs/app-deployment-process
+  description: >-
+    A multi-week staged rollout across set-top-box groups. At each stage the
+    app's Error Free Session Rate and Time To Minimally Usable metrics are
+    monitored against target numbers; the process ends at 100% general
+    availability, at which point the App Dashboard status becomes "Live".
+  certification_required: true
+  certification_docs:
+    - https://docs.developer.comcast.com/docs/deliverables-and-certification-requirements
+    - https://docs.developer.comcast.com/docs/self-certification-requirements-checklist
+    - https://docs.developer.comcast.com/docs/certification-lab
+
+status_page:
+  published: false
+  probed: true
+  note: >-
+    No public status page found for the developer platform. Incident handling is
+    routed through a partner manager and the support center at
+    http://x-ottapp.comcast.com (per
+    https://docs.developer.comcast.com/docs/getting-help), which is a
+    partner-authenticated channel, not a public status surface.
+
+support:
+  channel: partner manager + support center
+  url: http://x-ottapp.comcast.com
+  regional_contact: Partner_Mgmt@sky.uk
+  regional_note: >-
+    Several docs pages state they apply to North America only and route
+    non-North-American partners to Sky partner management.
+  source: https://docs.developer.comcast.com/docs/getting-help
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

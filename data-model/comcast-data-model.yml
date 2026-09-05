@@ -1,0 +1,2299 @@
+# Comcast — Firebolt data model (entity/relationship graph)
+#
+# Derived from the OpenRPC contracts. See note: below for what an edge means here.
+generated: '2026-09-05'
+method: derived
+source: openrpc/comcast-firebolt-{core,manage,discovery}-openrpc.json v1.7.0 (fetched 2026-09-05)
+provider: Comcast
+providerId: comcast
+note: 'Derived exhaustively from the JSON Schema definitions inside the three Firebolt OpenRPC contracts
+  — components/schemas plus the twelve x-schemas namespaces Firebolt uses to share types across modules
+  (Types, Entity, Entertainment, Discovery, Capabilities, Accessibility, Localization, Advertising, Policies,
+  Intents, Lifecycle, SecondScreen). Relationships are real $ref edges between schemas, not inferred from
+  field naming. Firebolt has no id-reference/foreign-key model: entities are linked by embedded $ref composition
+  and by ContentIdentifiers, so every edge below is has_one or has_many, and there are no belongs_to rows
+  to record.'
+summary:
+  schemas_total: 145
+  objects: 77
+  enums: 25
+  scalars_and_unions: 43
+  relationship_edges: 83
+  namespaces:
+    Accessibility: 11
+    Advertising: 1
+    Capabilities: 6
+    Discovery: 4
+    Entertainment: 8
+    Entity: 14
+    Intents: 12
+    Lifecycle: 2
+    Localization: 6
+    Policies: 1
+    SecondScreen: 1
+    Types: 8
+    components: 71
+anchor_entities:
+- entity: Entertainment.EntityInfo
+  why: The central content record. Everything Discovery exchanges with an app hangs off it.
+- entity: Entertainment.WayToWatch
+  why: How a given EntityInfo can actually be watched — the offering/entitlement join.
+- entity: Entertainment.ContentIdentifiers
+  why: The identity type. Firebolt correlates content across systems here rather than with a foreign key.
+- entity: Capabilities.CapabilityInfo
+  why: 'The authorization record: capability + supported/available + per-role permission status + deny
+    reasons.'
+- entity: GrantInfo
+  why: A user grant of one capability to one app in one role — the Manage-SDK side of the same model.
+entities:
+  InitializeResult:
+    namespace: components
+    sdk: core
+    type: object
+    title: InitializeResult
+    description: null
+    fields:
+    - version
+    required:
+    - version
+    enum: null
+    relationships:
+    - field: version
+      target: SemanticVersion
+      kind: has_one
+  AudioDescriptionSettings:
+    namespace: components
+    sdk: core
+    type: object
+    title: AudioDescriptionSettings
+    description: null
+    fields:
+    - enabled
+    required:
+    - enabled
+    enum: null
+    relationships: null
+  ChallengeRequestor:
+    namespace: components
+    sdk: core
+    type: object
+    title: ChallengeRequestor
+    description: null
+    fields:
+    - id
+    - name
+    required:
+    - id
+    - name
+    enum: null
+    relationships: null
+  Challenge:
+    namespace: components
+    sdk: core
+    type: object
+    title: Challenge
+    description: null
+    fields:
+    - capability
+    - requestor
+    required:
+    - capability
+    - requestor
+    enum: null
+    relationships:
+    - field: requestor
+      target: ChallengeRequestor
+      kind: has_one
+  AdPolicy:
+    namespace: components
+    sdk: core
+    type: object
+    title: AdPolicy
+    description: Describes various ad playback enforcement rules that the app should follow.
+    fields:
+    - skipRestriction
+    - limitAdTracking
+    required: null
+    enum: null
+    relationships:
+    - field: skipRestriction
+      target: SkipRestriction
+      kind: has_one
+  AdConfigurationOptions:
+    namespace: components
+    sdk: core
+    type: object
+    title: AdConfigurationOptions
+    description: null
+    fields:
+    - coppa
+    - environment
+    - authenticationEntity
+    required: null
+    enum: null
+    relationships: null
+  AdvertisingIdOptions:
+    namespace: components
+    sdk: core
+    type: object
+    title: AdvertisingIdOptions
+    description: null
+    fields:
+    - scope
+    required: null
+    enum: null
+    relationships: null
+  AdvertisingIdResult:
+    namespace: components
+    sdk: core
+    type: object
+    title: AdvertisingIdResult
+    description: null
+    fields:
+    - ifa
+    - ifa_type
+    - lmt
+    required:
+    - ifa
+    - ifa_type
+    - lmt
+    enum: null
+    relationships: null
+  TokenType:
+    namespace: components
+    sdk: core
+    type: string
+    title: TokenType
+    description: null
+    fields: null
+    required: null
+    enum:
+    - platform
+    - device
+    - distributor
+    relationships: null
+  AuthenticationTokenResult:
+    namespace: components
+    sdk: core
+    type: object
+    title: AuthenticationTokenResult
+    description: null
+    fields:
+    - value
+    - expires
+    - type
+    required:
+    - value
+    enum: null
+    relationships: null
+  CapabilityOption:
+    namespace: components
+    sdk: core
+    type: object
+    title: CapabilityOption
+    description: null
+    fields:
+    - role
+    required: null
+    enum: null
+    relationships:
+    - field: role
+      target: Role
+      kind: has_one
+  Resolution:
+    namespace: components
+    sdk: core
+    type: null
+    title: Resolution
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  NetworkType:
+    namespace: components
+    sdk: core
+    type: string
+    title: NetworkType
+    description: The type of network that is currently active
+    fields: null
+    required: null
+    enum:
+    - wifi
+    - ethernet
+    - hybrid
+    relationships: null
+  NetworkState:
+    namespace: components
+    sdk: core
+    type: string
+    title: NetworkState
+    description: The type of network that is currently active
+    fields: null
+    required: null
+    enum:
+    - connected
+    - disconnected
+    relationships: null
+  AudioProfiles:
+    namespace: components
+    sdk: core
+    type: object
+    title: AudioProfiles
+    description: null
+    fields:
+    - stereo
+    - dolbyDigital5.1
+    - dolbyDigital5.1+
+    - dolbyAtmos
+    required:
+    - stereo
+    - dolbyDigital5.1
+    - dolbyDigital5.1+
+    - dolbyAtmos
+    enum: null
+    relationships: null
+  HDRFormatMap:
+    namespace: components
+    sdk: core
+    type: object
+    title: HDRFormatMap
+    description: The type of HDR format
+    fields:
+    - hdr10
+    - hdr10Plus
+    - dolbyVision
+    - hlg
+    required:
+    - hdr10
+    - hdr10Plus
+    - dolbyVision
+    - hlg
+    enum: null
+    relationships: null
+  HDCPVersionMap:
+    namespace: components
+    sdk: core
+    type: object
+    title: HDCPVersionMap
+    description: The type of HDCP versions
+    fields:
+    - hdcp1.4
+    - hdcp2.2
+    required:
+    - hdcp1.4
+    - hdcp2.2
+    enum: null
+    relationships: null
+  DeviceVersion:
+    namespace: components
+    sdk: core
+    type: object
+    title: DeviceVersion
+    description: null
+    fields:
+    - sdk
+    - api
+    - firmware
+    - os
+    - debug
+    required:
+    - api
+    - firmware
+    - os
+    enum: null
+    relationships:
+    - field: sdk
+      target: SemanticVersion
+      kind: has_one
+    - field: api
+      target: SemanticVersion
+      kind: has_one
+    - field: firmware
+      target: SemanticVersion
+      kind: has_one
+    - field: os
+      target: SemanticVersion
+      kind: has_one
+  NetworkInfoResult:
+    namespace: components
+    sdk: core
+    type: object
+    title: NetworkInfoResult
+    description: null
+    fields:
+    - state
+    - type
+    required:
+    - state
+    - type
+    enum: null
+    relationships:
+    - field: state
+      target: NetworkState
+      kind: has_one
+    - field: type
+      target: NetworkType
+      kind: has_one
+  DiscoveryPolicy:
+    namespace: components
+    sdk: core
+    type: object
+    title: DiscoveryPolicy
+    description: null
+    fields:
+    - enableRecommendations
+    - shareWatchHistory
+    - rememberWatchedPrograms
+    required:
+    - enableRecommendations
+    - shareWatchHistory
+    - rememberWatchedPrograms
+    enum: null
+    relationships: null
+  FederatedRequest:
+    namespace: components
+    sdk: core
+    type: object
+    title: FederatedRequest
+    description: null
+    fields:
+    - correlationId
+    required:
+    - correlationId
+    enum: null
+    relationships: null
+  FederatedResponse:
+    namespace: components
+    sdk: core
+    type: object
+    title: FederatedResponse
+    description: null
+    fields:
+    - correlationId
+    required:
+    - correlationId
+    - result
+    enum: null
+    relationships: null
+  EntityInfoFederatedRequest:
+    namespace: components
+    sdk: core
+    type: null
+    title: EntityInfoFederatedRequest
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  EntityInfoParameters:
+    namespace: components
+    sdk: core
+    type: object
+    title: EntityInfoParameters
+    description: null
+    fields:
+    - entityId
+    - assetId
+    required:
+    - entityId
+    enum: null
+    relationships: null
+  PurchasedContentFederatedRequest:
+    namespace: components
+    sdk: core
+    type: null
+    title: PurchasedContentFederatedRequest
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  PurchasedContentParameters:
+    namespace: components
+    sdk: core
+    type: object
+    title: PurchasedContentParameters
+    description: null
+    fields:
+    - limit
+    - offeringType
+    - programType
+    required:
+    - limit
+    enum: null
+    relationships:
+    - field: offeringType
+      target: OfferingType
+      kind: has_one
+    - field: programType
+      target: ProgramType
+      kind: has_one
+  Availability:
+    namespace: components
+    sdk: core
+    type: object
+    title: Availability
+    description: null
+    fields:
+    - type
+    - id
+    - catalogId
+    - startTime
+    - endTime
+    required:
+    - type
+    - id
+    enum: null
+    relationships: null
+  ContentAccessIdentifiers:
+    namespace: components
+    sdk: core
+    type: object
+    title: ContentAccessIdentifiers
+    description: null
+    fields:
+    - availabilities
+    - entitlements
+    required: null
+    enum: null
+    relationships:
+    - field: availabilities
+      target: Availability
+      kind: has_many
+    - field: entitlements
+      target: Entitlement
+      kind: has_many
+  UserInterestProviderParameters:
+    namespace: components
+    sdk: core
+    type: object
+    title: UserInterestProviderParameters
+    description: null
+    fields:
+    - type
+    - reason
+    required:
+    - type
+    - reason
+    enum: null
+    relationships:
+    - field: type
+      target: InterestType
+      kind: has_one
+    - field: reason
+      target: InterestReason
+      kind: has_one
+  HDMIPortId:
+    namespace: components
+    sdk: core
+    type: string
+    title: HDMIPortId
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  EDIDVersion:
+    namespace: components
+    sdk: core
+    type: string
+    title: EDIDVersion
+    description: null
+    fields: null
+    required: null
+    enum:
+    - '1.4'
+    - '2.0'
+    - unknown
+    relationships: null
+  HDMIInputPort:
+    namespace: components
+    sdk: core
+    type: object
+    title: HDMIInputPort
+    description: null
+    fields:
+    - port
+    - connected
+    - signal
+    - arcCapable
+    - arcConnected
+    - edidVersion
+    - autoLowLatencyModeCapable
+    - autoLowLatencyModeSignalled
+    required:
+    - port
+    - connected
+    - signal
+    - arcCapable
+    - arcConnected
+    - edidVersion
+    - autoLowLatencyModeCapable
+    - autoLowLatencyModeSignalled
+    enum: null
+    relationships:
+    - field: port
+      target: HDMIPortId
+      kind: has_one
+    - field: signal
+      target: HDMISignalStatus
+      kind: has_one
+    - field: edidVersion
+      target: EDIDVersion
+      kind: has_one
+  HDMISignalStatus:
+    namespace: components
+    sdk: core
+    type: string
+    title: HDMISignalStatus
+    description: null
+    fields: null
+    required: null
+    enum:
+    - none
+    - stable
+    - unstable
+    - unsupported
+    - unknown
+    relationships: null
+  SignalChangedInfo:
+    namespace: components
+    sdk: core
+    type: object
+    title: SignalChangedInfo
+    description: null
+    fields:
+    - port
+    - signal
+    required:
+    - port
+    - signal
+    enum: null
+    relationships:
+    - field: port
+      target: HDMIPortId
+      kind: has_one
+    - field: signal
+      target: HDMISignalStatus
+      kind: has_one
+  ConnectionChangedInfo:
+    namespace: components
+    sdk: core
+    type: object
+    title: ConnectionChangedInfo
+    description: null
+    fields:
+    - port
+    - connected
+    required: null
+    enum: null
+    relationships:
+    - field: port
+      target: HDMIPortId
+      kind: has_one
+  AutoLowLatencyModeSignalChangedInfo:
+    namespace: components
+    sdk: core
+    type: object
+    title: AutoLowLatencyModeSignalChangedInfo
+    description: null
+    fields:
+    - port
+    - autoLowLatencyModeSignalled
+    required: null
+    enum: null
+    relationships:
+    - field: port
+      target: HDMIPortId
+      kind: has_one
+  AutoLowLatencyModeCapableChangedInfo:
+    namespace: components
+    sdk: core
+    type: object
+    title: AutoLowLatencyModeCapableChangedInfo
+    description: null
+    fields:
+    - port
+    - enabled
+    required:
+    - port
+    - enabled
+    enum: null
+    relationships:
+    - field: port
+      target: HDMIPortId
+      kind: has_one
+  EmailUsage:
+    namespace: components
+    sdk: core
+    type: string
+    title: EmailUsage
+    description: null
+    fields: null
+    required: null
+    enum:
+    - signIn
+    - signUp
+    relationships: null
+  KeyboardParameters:
+    namespace: components
+    sdk: core
+    type: object
+    title: KeyboardParameters
+    description: null
+    fields:
+    - message
+    required:
+    - message
+    enum: null
+    relationships: null
+  LifecycleEvent:
+    namespace: components
+    sdk: core
+    type: object
+    title: LifecycleEvent
+    description: A an object describing the previous and current states
+    fields:
+    - state
+    - previous
+    - source
+    required:
+    - state
+    - previous
+    enum: null
+    relationships:
+    - field: state
+      target: LifecycleState
+      kind: has_one
+    - field: previous
+      target: LifecycleState
+      kind: has_one
+  LatLon:
+    namespace: components
+    sdk: core
+    type: array
+    title: LatLon
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  MediaPosition:
+    namespace: components
+    sdk: core
+    type: null
+    title: MediaPosition
+    description: Represents a position inside playback content, as a decimal percentage (0-0.999) for
+      content with a known duration, or an integer number of seconds (0-86400) for content with an unknown
+      duration.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  ErrorType:
+    namespace: components
+    sdk: core
+    type: string
+    title: ErrorType
+    description: null
+    fields: null
+    required: null
+    enum:
+    - network
+    - media
+    - restriction
+    - entitlement
+    - other
+    relationships: null
+  EventObjectPrimitives:
+    namespace: components
+    sdk: core
+    type: null
+    title: EventObjectPrimitives
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  EventObject:
+    namespace: components
+    sdk: core
+    type: object
+    title: EventObject
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  AppInitialization:
+    namespace: components
+    sdk: core
+    type: object
+    title: AppInitialization
+    description: null
+    fields:
+    - us_privacy
+    - lmt
+    - discovery
+    - secondScreen
+    required: null
+    enum: null
+    relationships:
+    - field: discovery
+      target: NavigationIntent
+      kind: has_one
+    - field: secondScreen
+      target: SecondScreenEvent
+      kind: has_one
+  PinChallenge:
+    namespace: components
+    sdk: core
+    type: object
+    title: PinChallenge
+    description: null
+    fields:
+    - pinSpace
+    - capability
+    - requestor
+    required:
+    - requestor
+    - pinSpace
+    enum: null
+    relationships:
+    - field: requestor
+      target: ChallengeRequestor
+      kind: has_one
+  ResultReason:
+    namespace: components
+    sdk: core
+    type: string
+    title: ResultReason
+    description: The reason for the result of challenging the user
+    fields: null
+    required: null
+    enum:
+    - noPinRequired
+    - noPinRequiredWindow
+    - exceededPinFailures
+    - correctPin
+    - cancelled
+    relationships: null
+  StorageScope:
+    namespace: components
+    sdk: core
+    type: string
+    title: StorageScope
+    description: The scope of the data
+    fields: null
+    required: null
+    enum:
+    - device
+    - account
+    relationships: null
+  StorageOptions:
+    namespace: components
+    sdk: core
+    type: object
+    title: StorageOptions
+    description: null
+    fields:
+    - ttl
+    required:
+    - ttl
+    enum: null
+    relationships: null
+  AppInfo:
+    namespace: components
+    sdk: core
+    type: object
+    title: AppInfo
+    description: Information about an app that a grant was for
+    fields:
+    - id
+    - title
+    required:
+    - id
+    enum: null
+    relationships: null
+  GrantState:
+    namespace: components
+    sdk: core
+    type: string
+    title: GrantState
+    description: The state the grant is in
+    fields: null
+    required: null
+    enum:
+    - granted
+    - denied
+    relationships: null
+  WifiSecurityMode:
+    namespace: components
+    sdk: core
+    type: string
+    title: WifiSecurityMode
+    description: Security Mode supported for Wifi
+    fields: null
+    required: null
+    enum:
+    - none
+    - wep64
+    - wep128
+    - wpaPskTkip
+    - wpaPskAes
+    - wpa2PskTkip
+    - wpa2PskAes
+    - wpaEnterpriseTkip
+    - wpaEnterpriseAes
+    - wpa2EnterpriseTkip
+    - wpa2EnterpriseAes
+    - wpa2Psk
+    - wpa2Enterprise
+    - wpa3PskAes
+    - wpa3Sae
+    relationships: null
+  WifiSignalStrength:
+    namespace: components
+    sdk: core
+    type: integer
+    title: WifiSignalStrength
+    description: Strength of Wifi signal, value is negative based on RSSI specification.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  WifiFrequency:
+    namespace: components
+    sdk: core
+    type: number
+    title: WifiFrequency
+    description: Wifi Frequency in Ghz, example 2.4Ghz and 5Ghz.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  AccessPoint:
+    namespace: components
+    sdk: core
+    type: object
+    title: AccessPoint
+    description: Properties of a scanned wifi list item.
+    fields:
+    - ssid
+    - securityMode
+    - signalStrength
+    - frequency
+    required: null
+    enum: null
+    relationships:
+    - field: securityMode
+      target: WifiSecurityMode
+      kind: has_one
+    - field: signalStrength
+      target: WifiSignalStrength
+      kind: has_one
+    - field: frequency
+      target: WifiFrequency
+      kind: has_one
+  Types.SemanticVersion:
+    namespace: Types
+    sdk: core
+    type: object
+    title: SemanticVersion
+    description: null
+    fields:
+    - major
+    - minor
+    - patch
+    - readable
+    required:
+    - major
+    - minor
+    - patch
+    - readable
+    enum: null
+    relationships: null
+  Types.ListenResponse:
+    namespace: Types
+    sdk: core
+    type: object
+    title: ListenResponse
+    description: null
+    fields:
+    - event
+    - listening
+    required:
+    - event
+    - listening
+    enum: null
+    relationships: null
+  Types.ProviderRequest:
+    namespace: Types
+    sdk: core
+    type: object
+    title: ProviderRequest
+    description: null
+    fields:
+    - correlationId
+    - parameters
+    required:
+    - correlationId
+    enum: null
+    relationships: null
+  Types.AudioProfile:
+    namespace: Types
+    sdk: core
+    type: string
+    title: AudioProfile
+    description: null
+    fields: null
+    required: null
+    enum:
+    - stereo
+    - dolbyDigital5.1
+    - dolbyDigital5.1+
+    - dolbyAtmos
+    relationships: null
+  Types.LocalizedString:
+    namespace: Types
+    sdk: core
+    type: null
+    title: LocalizedString
+    description: Localized string supports either a simple `string` or a Map<string, string> of language
+      codes to strings. When using a simple `string`, the current preferred langauge from `Localization.langauge()`
+      is assumed.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Types.FlatMap:
+    namespace: Types
+    sdk: core
+    type: object
+    title: FlatMap
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Types.BooleanMap:
+    namespace: Types
+    sdk: core
+    type: object
+    title: BooleanMap
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Types.Timeout:
+    namespace: Types
+    sdk: core
+    type: integer
+    title: Timeout
+    description: Defines the timeout in seconds. If the threshold for timeout is passed for any operation
+      without a result it will throw an error.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Accessibility.ClosedCaptionsSettings:
+    namespace: Accessibility
+    sdk: core
+    type: object
+    title: ClosedCaptionsSettings
+    description: null
+    fields:
+    - enabled
+    - styles
+    - preferredLanguages
+    required:
+    - enabled
+    enum: null
+    relationships:
+    - field: styles
+      target: ClosedCaptionsStyles
+      kind: has_one
+    - field: preferredLanguages
+      target: ISO639_2Language
+      kind: has_many
+  Accessibility.VoiceGuidanceSettings:
+    namespace: Accessibility
+    sdk: core
+    type: object
+    title: VoiceGuidanceSettings
+    description: null
+    fields:
+    - enabled
+    - navigationHints
+    - rate
+    - speed
+    required:
+    - enabled
+    - navigationHints
+    - rate
+    enum: null
+    relationships:
+    - field: rate
+      target: SpeechRate
+      kind: has_one
+    - field: speed
+      target: SpeechRate
+      kind: has_one
+  Accessibility.SpeechRate:
+    namespace: Accessibility
+    sdk: core
+    type: number
+    title: SpeechRate
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Accessibility.ClosedCaptionsStyles:
+    namespace: Accessibility
+    sdk: core
+    type: object
+    title: ClosedCaptionsStyles
+    description: The default styles to use when displaying closed-captions
+    fields:
+    - fontFamily
+    - fontSize
+    - fontColor
+    - fontEdge
+    - fontEdgeColor
+    - fontOpacity
+    - backgroundColor
+    - backgroundOpacity
+    - textAlign
+    - textAlignVertical
+    - windowColor
+    - windowOpacity
+    required: null
+    enum: null
+    relationships:
+    - field: fontFamily
+      target: FontFamily
+      kind: has_one
+    - field: fontSize
+      target: FontSize
+      kind: has_one
+    - field: fontColor
+      target: Color
+      kind: has_one
+    - field: fontEdge
+      target: FontEdge
+      kind: has_one
+    - field: fontEdgeColor
+      target: Color
+      kind: has_one
+    - field: fontOpacity
+      target: Opacity
+      kind: has_one
+    - field: backgroundColor
+      target: Color
+      kind: has_one
+    - field: backgroundOpacity
+      target: Opacity
+      kind: has_one
+    - field: textAlign
+      target: HorizontalAlignment
+      kind: has_one
+    - field: textAlignVertical
+      target: VerticalAlignment
+      kind: has_one
+    - field: windowColor
+      target: Color
+      kind: has_one
+    - field: windowOpacity
+      target: Opacity
+      kind: has_one
+  Accessibility.FontFamily:
+    namespace: Accessibility
+    sdk: core
+    type:
+    - string
+    - 'null'
+    title: FontFamily
+    description: null
+    fields: null
+    required: null
+    enum:
+    - monospaced_serif
+    - proportional_serif
+    - monospaced_sanserif
+    - proportional_sanserif
+    - smallcaps
+    - cursive
+    - casual
+    - null
+    relationships: null
+  Accessibility.FontSize:
+    namespace: Accessibility
+    sdk: core
+    type:
+    - number
+    - 'null'
+    title: FontSize
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Accessibility.Color:
+    namespace: Accessibility
+    sdk: core
+    type:
+    - string
+    - 'null'
+    title: Color
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Accessibility.FontEdge:
+    namespace: Accessibility
+    sdk: core
+    type:
+    - string
+    - 'null'
+    title: FontEdge
+    description: null
+    fields: null
+    required: null
+    enum:
+    - none
+    - raised
+    - depressed
+    - uniform
+    - drop_shadow_left
+    - drop_shadow_right
+    - null
+    relationships: null
+  Accessibility.Opacity:
+    namespace: Accessibility
+    sdk: core
+    type:
+    - number
+    - 'null'
+    title: Opacity
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Accessibility.HorizontalAlignment:
+    namespace: Accessibility
+    sdk: core
+    type:
+    - string
+    - 'null'
+    title: HorizontalAlignment
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Accessibility.VerticalAlignment:
+    namespace: Accessibility
+    sdk: core
+    type:
+    - string
+    - 'null'
+    title: VerticalAlignment
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Localization.ISO639_2Language:
+    namespace: Localization
+    sdk: core
+    type: string
+    title: ISO639_2Language
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Localization.Locality:
+    namespace: Localization
+    sdk: core
+    type: string
+    title: Locality
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Localization.CountryCode:
+    namespace: Localization
+    sdk: core
+    type: string
+    title: CountryCode
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Localization.Language:
+    namespace: Localization
+    sdk: core
+    type: string
+    title: Language
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Localization.Locale:
+    namespace: Localization
+    sdk: core
+    type: string
+    title: Locale
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Localization.TimeZone:
+    namespace: Localization
+    sdk: core
+    type: string
+    title: TimeZone
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Advertising.SkipRestriction:
+    namespace: Advertising
+    sdk: core
+    type: string
+    title: SkipRestriction
+    description: The advertisement skip restriction.
+    fields: null
+    required: null
+    enum:
+    - none
+    - adsUnwatched
+    - adsAll
+    - all
+    relationships: null
+  Capabilities.Capability:
+    namespace: Capabilities
+    sdk: core
+    type: string
+    title: Capability
+    description: A Capability is a discrete unit of functionality that a Firebolt device might be able
+      to perform.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Capabilities.CapabilityInfo:
+    namespace: Capabilities
+    sdk: core
+    type: object
+    title: CapabilityInfo
+    description: null
+    fields:
+    - capability
+    - supported
+    - available
+    - use
+    - manage
+    - provide
+    - details
+    required:
+    - supported
+    - available
+    - use
+    - manage
+    - provide
+    enum: null
+    relationships:
+    - field: capability
+      target: Capability
+      kind: has_one
+    - field: use
+      target: CapPermissionStatus
+      kind: has_one
+    - field: manage
+      target: CapPermissionStatus
+      kind: has_one
+    - field: provide
+      target: CapPermissionStatus
+      kind: has_one
+    - field: details
+      target: DenyReason
+      kind: has_many
+  Capabilities.Permission:
+    namespace: Capabilities
+    sdk: core
+    type: object
+    title: Permission
+    description: A capability combined with a Role, which an app may be permitted (by a distributor) or
+      granted (by an end user).
+    fields:
+    - role
+    - capability
+    required:
+    - capability
+    enum: null
+    relationships:
+    - field: role
+      target: Role
+      kind: has_one
+    - field: capability
+      target: Capability
+      kind: has_one
+  Capabilities.Role:
+    namespace: Capabilities
+    sdk: core
+    type: string
+    title: Role
+    description: Role provides access level for the app for a given capability.
+    fields: null
+    required: null
+    enum:
+    - use
+    - manage
+    - provide
+    relationships: null
+  Capabilities.CapPermissionStatus:
+    namespace: Capabilities
+    sdk: core
+    type: object
+    title: CapPermissionStatus
+    description: null
+    fields:
+    - permitted
+    - granted
+    required: null
+    enum: null
+    relationships: null
+  Capabilities.DenyReason:
+    namespace: Capabilities
+    sdk: core
+    type: string
+    title: DenyReason
+    description: Reasons why a Capability might not be invokable
+    fields: null
+    required: null
+    enum:
+    - unpermitted
+    - unsupported
+    - disabled
+    - unavailable
+    - grantDenied
+    - ungranted
+    relationships: null
+  Discovery.InterestType:
+    namespace: Discovery
+    sdk: core
+    type: string
+    title: InterestType
+    description: null
+    fields: null
+    required: null
+    enum:
+    - interest
+    - disinterest
+    relationships: null
+  Discovery.InterestReason:
+    namespace: Discovery
+    sdk: core
+    type: string
+    title: InterestReason
+    description: null
+    fields: null
+    required: null
+    enum:
+    - playlist
+    - reaction
+    - recording
+    relationships: null
+  Discovery.EntityInfoResult:
+    namespace: Discovery
+    sdk: core
+    type: object
+    title: EntityInfoResult
+    description: The result for an `entityInfo()` push or pull.
+    fields:
+    - expires
+    - entity
+    - related
+    required:
+    - expires
+    - entity
+    enum: null
+    relationships:
+    - field: entity
+      target: EntityInfo
+      kind: has_one
+    - field: related
+      target: EntityInfo
+      kind: has_many
+  Discovery.PurchasedContentResult:
+    namespace: Discovery
+    sdk: core
+    type: object
+    title: PurchasedContentResult
+    description: null
+    fields:
+    - expires
+    - totalCount
+    - entries
+    required:
+    - expires
+    - totalCount
+    - entries
+    enum: null
+    relationships:
+    - field: entries
+      target: EntityInfo
+      kind: has_many
+  Entity.EntityDetails:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: EntityDetails
+    description: null
+    fields:
+    - identifiers
+    - info
+    - waysToWatch
+    required:
+    - identifiers
+    enum: null
+    relationships:
+    - field: identifiers
+      target: Entity
+      kind: has_one
+    - field: info
+      target: Metadata
+      kind: has_one
+    - field: waysToWatch
+      target: WayToWatch
+      kind: has_many
+  Entity.Entity:
+    namespace: Entity
+    sdk: core
+    type: null
+    title: Entity
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Entity.Metadata:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: Metadata
+    description: null
+    fields:
+    - title
+    - synopsis
+    - seasonNumber
+    - seasonCount
+    - episodeNumber
+    - episodeCount
+    - releaseDate
+    - contentRatings
+    required: null
+    enum: null
+    relationships:
+    - field: contentRatings
+      target: ContentRating
+      kind: has_many
+  Entity.ProgramEntity:
+    namespace: Entity
+    sdk: core
+    type: null
+    title: ProgramEntity
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Entity.MusicEntity:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: MusicEntity
+    description: null
+    fields:
+    - entityType
+    - musicType
+    - entityId
+    required:
+    - entityType
+    - musicType
+    - entityId
+    enum: null
+    relationships:
+    - field: musicType
+      target: MusicType
+      kind: has_one
+  Entity.ChannelEntity:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: ChannelEntity
+    description: null
+    fields:
+    - entityType
+    - channelType
+    - entityId
+    - appContentData
+    required:
+    - entityType
+    - channelType
+    - entityId
+    enum: null
+    relationships: null
+  Entity.UntypedEntity:
+    namespace: Entity
+    sdk: core
+    type: null
+    title: UntypedEntity
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Entity.PlaylistEntity:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: PlaylistEntity
+    description: A Firebolt compliant representation of a Playlist entity.
+    fields:
+    - entityType
+    - entityId
+    - assetId
+    - appContentData
+    required:
+    - entityType
+    - entityId
+    enum: null
+    relationships: null
+  Entity.MovieEntity:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: MovieEntity
+    description: A Firebolt compliant representation of a Movie entity.
+    fields:
+    - entityType
+    - programType
+    - entityId
+    - assetId
+    - appContentData
+    required:
+    - entityType
+    - programType
+    - entityId
+    enum: null
+    relationships: null
+  Entity.TVEpisodeEntity:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: TVEpisodeEntity
+    description: A Firebolt compliant representation of a TV Episode entity.
+    fields:
+    - entityType
+    - programType
+    - entityId
+    - seriesId
+    - seasonId
+    - assetId
+    - appContentData
+    required:
+    - entityType
+    - programType
+    - entityId
+    - seriesId
+    - seasonId
+    enum: null
+    relationships: null
+  Entity.TVSeasonEntity:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: TVSeasonEntity
+    description: A Firebolt compliant representation of a TV Season entity.
+    fields:
+    - entityType
+    - programType
+    - entityId
+    - seriesId
+    - assetId
+    - appContentData
+    required:
+    - entityType
+    - programType
+    - entityId
+    - seriesId
+    enum: null
+    relationships: null
+  Entity.TVSeriesEntity:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: TVSeriesEntity
+    description: A Firebolt compliant representation of a TV Series entity.
+    fields:
+    - entityType
+    - programType
+    - entityId
+    - assetId
+    - appContentData
+    required:
+    - entityType
+    - programType
+    - entityId
+    enum: null
+    relationships: null
+  Entity.AdditionalEntity:
+    namespace: Entity
+    sdk: core
+    type: object
+    title: AdditionalEntity
+    description: A Firebolt compliant representation of the remaining program entity types.
+    fields:
+    - entityType
+    - programType
+    - entityId
+    - assetId
+    - appContentData
+    required:
+    - entityType
+    - programType
+    - entityId
+    enum: null
+    relationships: null
+  Entity.PlayableEntity:
+    namespace: Entity
+    sdk: core
+    type: null
+    title: PlayableEntity
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Entertainment.WayToWatch:
+    namespace: Entertainment
+    sdk: core
+    type: object
+    title: WayToWatch
+    description: A WayToWatch describes a way to watch a video program. It may describe a single
+    fields:
+    - identifiers
+    - expires
+    - entitled
+    - entitledExpires
+    - offeringType
+    - hasAds
+    - price
+    - videoQuality
+    - audioProfile
+    - audioLanguages
+    - closedCaptions
+    - subtitles
+    - audioDescriptions
+    required:
+    - identifiers
+    - audioProfile
+    enum: null
+    relationships:
+    - field: identifiers
+      target: ContentIdentifiers
+      kind: has_one
+    - field: offeringType
+      target: OfferingType
+      kind: has_one
+    - field: audioProfile
+      target: AudioProfile
+      kind: has_many
+  Entertainment.OfferingType:
+    namespace: Entertainment
+    sdk: core
+    type: string
+    title: OfferingType
+    description: The offering type of the WayToWatch.
+    fields: null
+    required: null
+    enum:
+    - free
+    - subscribe
+    - buy
+    - rent
+    relationships: null
+  Entertainment.ContentIdentifiers:
+    namespace: Entertainment
+    sdk: core
+    type: object
+    title: ContentIdentifiers
+    description: The ContentIdentifiers object is how the app identifies an entity or asset to
+    fields:
+    - assetId
+    - entityId
+    - seasonId
+    - seriesId
+    - appContentData
+    required: null
+    enum: null
+    relationships: null
+  Entertainment.ContentRating:
+    namespace: Entertainment
+    sdk: core
+    type: object
+    title: ContentRating
+    description: A ContentRating represents an age or content based of an entity. Supported rating schemes
+      and associated types are below.
+    fields:
+    - scheme
+    - rating
+    - advisories
+    required:
+    - scheme
+    - rating
+    enum: null
+    relationships: null
+  Entertainment.MusicType:
+    namespace: Entertainment
+    sdk: core
+    type: string
+    title: MusicType
+    description: In the case of a music `entityType`, specifies the type of music entity.
+    fields: null
+    required: null
+    enum:
+    - song
+    - album
+    relationships: null
+  Entertainment.Entitlement:
+    namespace: Entertainment
+    sdk: core
+    type: object
+    title: Entitlement
+    description: null
+    fields:
+    - entitlementId
+    - startTime
+    - endTime
+    required:
+    - entitlementId
+    enum: null
+    relationships: null
+  Entertainment.EntityInfo:
+    namespace: Entertainment
+    sdk: core
+    type: object
+    title: EntityInfo
+    description: An EntityInfo object represents an "entity" on the platform. Currently, only entities
+      of type `program` are supported. `programType` must be supplied to identify the program type.
+    fields:
+    - identifiers
+    - title
+    - entityType
+    - programType
+    - musicType
+    - synopsis
+    - seasonNumber
+    - seasonCount
+    - episodeNumber
+    - episodeCount
+    - releaseDate
+    - contentRatings
+    - waysToWatch
+    required:
+    - identifiers
+    - entityType
+    - title
+    enum: null
+    relationships:
+    - field: identifiers
+      target: ContentIdentifiers
+      kind: has_one
+    - field: programType
+      target: ProgramType
+      kind: has_one
+    - field: musicType
+      target: MusicType
+      kind: has_one
+    - field: contentRatings
+      target: ContentRating
+      kind: has_many
+    - field: waysToWatch
+      target: WayToWatch
+      kind: has_many
+  Entertainment.ProgramType:
+    namespace: Entertainment
+    sdk: core
+    type: string
+    title: ProgramType
+    description: In the case of a program `entityType`, specifies the program type.
+    fields: null
+    required: null
+    enum:
+    - movie
+    - episode
+    - season
+    - series
+    - other
+    - preview
+    - extra
+    - concert
+    - sportingEvent
+    - advertisement
+    - musicVideo
+    - minisode
+    relationships: null
+  Policies.AgePolicy:
+    namespace: Policies
+    sdk: core
+    type: null
+    title: AgePolicy
+    description: The policy that describes various age groups to which content is directed. See distributor
+      documentation for further details.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.NavigationIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: NavigationIntent
+    description: A Firebolt compliant representation of a user intention to navigate to a specific place
+      in an app.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.HomeIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: HomeIntent
+    description: A Firebolt compliant representation of a user intention to navigate an app to it's home
+      screen, and bring that app to the foreground if needed.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.LaunchIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: LaunchIntent
+    description: A Firebolt compliant representation of a user intention to launch an app.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.EntityIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: EntityIntent
+    description: A Firebolt compliant representation of a user intention to navigate an app to a specific
+      entity page, and bring that app to the foreground if needed.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.PlaybackIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: PlaybackIntent
+    description: A Firebolt compliant representation of a user intention to navigate an app to a the video
+      player for a specific, playable entity, and bring that app to the foreground if needed.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.SearchIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: SearchIntent
+    description: A Firebolt compliant representation of a user intention to navigate an app to it's search
+      UI with a search term populated, and bring that app to the foreground if needed.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.SectionIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: SectionIntent
+    description: A Firebolt compliant representation of a user intention to navigate an app to a section
+      not covered by `home`, `entity`, `player`, or `search`, and bring that app to the foreground if
+      needed.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.TuneIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: TuneIntent
+    description: A Firebolt compliant representation of a user intention to 'tune' to a traditional over-the-air
+      broadcast, or an OTT Stream from an OTT or vMVPD App.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.PlayEntityIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: PlayEntityIntent
+    description: A Firebolt compliant representation of a user intention to navigate an app to a the video
+      player for a specific, playable entity, and bring that app to the foreground if needed.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.PlayQueryIntent:
+    namespace: Intents
+    sdk: core
+    type: null
+    title: PlayQueryIntent
+    description: A Firebolt compliant representation of a user intention to navigate an app to a the video
+      player for an abstract query to be searched for and played by the app.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Intents.Intent:
+    namespace: Intents
+    sdk: core
+    type: object
+    title: Intent
+    description: A Firebolt compliant representation of a user intention.
+    fields:
+    - action
+    - context
+    required:
+    - action
+    - context
+    enum: null
+    relationships:
+    - field: context
+      target: AgePolicy
+      kind: has_one
+  Intents.IntentProperties:
+    namespace: Intents
+    sdk: core
+    type: object
+    title: IntentProperties
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Lifecycle.CloseReason:
+    namespace: Lifecycle
+    sdk: core
+    type: string
+    title: CloseReason
+    description: The application close reason
+    fields: null
+    required: null
+    enum:
+    - remoteButton
+    - userExit
+    - done
+    - error
+    relationships: null
+  Lifecycle.LifecycleState:
+    namespace: Lifecycle
+    sdk: core
+    type: string
+    title: LifecycleState
+    description: The application lifecycle state
+    fields: null
+    required: null
+    enum:
+    - initializing
+    - inactive
+    - foreground
+    - background
+    - unloading
+    - suspended
+    relationships: null
+  SecondScreen.SecondScreenEvent:
+    namespace: SecondScreen
+    sdk: core
+    type: object
+    title: SecondScreenEvent
+    description: An a message notification from a second screen device
+    fields:
+    - type
+    - version
+    - data
+    required:
+    - type
+    enum: null
+    relationships: null
+  Token:
+    namespace: components
+    sdk: manage
+    type: string
+    title: Token
+    description: Encoded token provided by the Distributor for Device Authentication.
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  Expiry:
+    namespace: components
+    sdk: manage
+    type: integer
+    title: Expiry
+    description: Number of secs before the token expires
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  ChallengeProviderRequest:
+    namespace: components
+    sdk: manage
+    type: null
+    title: ChallengeProviderRequest
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  GrantResult:
+    namespace: components
+    sdk: manage
+    type: object
+    title: GrantResult
+    description: null
+    fields:
+    - granted
+    required:
+    - granted
+    enum: null
+    relationships: null
+  KeyboardProviderRequest:
+    namespace: components
+    sdk: manage
+    type: object
+    title: KeyboardProviderRequest
+    description: null
+    fields:
+    - correlationId
+    - parameters
+    required:
+    - correlationId
+    - parameters
+    enum: null
+    relationships:
+    - field: parameters
+      target: KeyboardParameters
+      kind: has_one
+  PinChallengeProviderRequest:
+    namespace: components
+    sdk: manage
+    type: null
+    title: PinChallengeProviderRequest
+    description: null
+    fields: null
+    required: null
+    enum: null
+    relationships: null
+  PinChallengeResult:
+    namespace: components
+    sdk: manage
+    type: object
+    title: PinChallengeResult
+    description: null
+    fields:
+    - granted
+    - reason
+    required:
+    - granted
+    - reason
+    enum: null
+    relationships:
+    - field: reason
+      target: ResultReason
+      kind: has_one
+  PrivacySettings:
+    namespace: components
+    sdk: manage
+    type: object
+    title: PrivacySettings
+    description: null
+    fields:
+    - allowACRCollection
+    - allowResumePoints
+    - allowAppContentAdTargeting
+    - allowCameraAnalytics
+    - allowPersonalization
+    - allowPrimaryBrowseAdTargeting
+    - allowPrimaryContentAdTargeting
+    - allowProductAnalytics
+    - allowRemoteDiagnostics
+    - allowUnentitledPersonalization
+    - allowUnentitledResumePoints
+    - allowWatchHistory
+    required:
+    - allowACRCollection
+    - allowResumePoints
+    - allowAppContentAdTargeting
+    - allowCameraAnalytics
+    - allowPersonalization
+    - allowPrimaryBrowseAdTargeting
+    - allowPrimaryContentAdTargeting
+    - allowProductAnalytics
+    - allowRemoteDiagnostics
+    - allowUnentitledPersonalization
+    - allowUnentitledResumePoints
+    - allowWatchHistory
+    enum: null
+    relationships: null
+  GrantInfo:
+    namespace: components
+    sdk: manage
+    type: object
+    title: GrantInfo
+    description: Information about a grant given by a user
+    fields:
+    - app
+    - state
+    - capability
+    - role
+    - lifespan
+    - expires
+    required:
+    - state
+    - capability
+    - role
+    - lifespan
+    enum: null
+    relationships:
+    - field: app
+      target: AppInfo
+      kind: has_one
+    - field: state
+      target: GrantState
+      kind: has_one
+    - field: capability
+      target: Capability
+      kind: has_one
+    - field: role
+      target: Role
+      kind: has_one
+  GrantModificationOptions:
+    namespace: components
+    sdk: manage
+    type: object
+    title: GrantModificationOptions
+    description: Options when modifying any grant
+    fields:
+    - appId
+    required: null
+    enum: null
+    relationships: null
+  RequestOptions:
+    namespace: components
+    sdk: manage
+    type: object
+    title: RequestOptions
+    description: null
+    fields:
+    - force
+    required: null
+    enum: null
+    relationships: null
+  AccessPointList:
+    namespace: components
+    sdk: manage
+    type: object
+    title: AccessPointList
+    description: List of scanned Wifi networks available near the device.
+    fields:
+    - list
+    required: null
+    enum: null
+    relationships:
+    - field: list
+      target: AccessPoint
+      kind: has_many
+  WPSSecurityPin:
+    namespace: components
+    sdk: manage
+    type: string
+    title: WPSSecurityPin
+    description: Security pin type for WPS(Wifi Protected Setup).
+    fields: null
+    required: null
+    enum:
+    - pushButton
+    - pin
+    - manufacturerPin
+    relationships: null
+  InterestResult:
+    namespace: components
+    sdk: discovery
+    type: object
+    title: InterestResult
+    description: null
+    fields:
+    - appId
+    - entity
+    required:
+    - appId
+    - entity
+    enum: null
+    relationships:
+    - field: entity
+      target: EntityDetails
+      kind: has_one
+  InterestEvent:
+    namespace: components
+    sdk: discovery
+    type: object
+    title: InterestEvent
+    description: null
+    fields:
+    - appId
+    - type
+    - reason
+    - entity
+    required:
+    - appId
+    - entity
+    - type
+    - reason
+    enum: null
+    relationships:
+    - field: type
+      target: InterestType
+      kind: has_one
+    - field: reason
+      target: InterestReason
+      kind: has_one
+    - field: entity
+      target: EntityDetails
+      kind: has_one
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

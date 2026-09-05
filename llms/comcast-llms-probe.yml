@@ -1,20 +1,47 @@
-# Negative probe result — recorded deliberately.
+# Comcast — llms.txt probe record
 #
-# roadmap#27: `llms_txt_published` credited a DECLARED pointer wherever no llms/
-# artifact existed. This file IS that artifact. It makes repo_has?(slug,'llms')
-# true so the unprobed-pointer fallback stops firing, while carrying no .txt so
-# llms_txt_present? stays false. The check therefore returns a TRUE zero, backed
-# by a fetched URL and a status code, instead of a false credit.
+# UPDATED 2026-09-05. The 2026-08-17 round probed ONE host — developer.comcast.com
+# — got a 405-byte HTML shell, and correctly recorded a soft-404. What it did not
+# do was probe the DOCS host. docs.developer.comcast.com serves a real llms.txt:
+# HTTP 200, text/plain, 30,514 bytes, 351 entries. It is saved verbatim at
+# llms/comcast-llms.txt.
 #
-# Same posture as the well-known probe artifacts: a recorded absence is a valid
-# measurement. Do not delete this to 'clean up' — deleting it restores the bug.
+# Both results are kept. The negative result on developer.comcast.com is still
+# true and still worth recording — the apis.yml LlmsText pointer used to target
+# that host, which is why this file existed. The lesson generalises: probe the
+# docs host, not just the portal host.
 llms:
-  probed: '2026-08-17'
-  url: https://developer.comcast.com/llms.txt
-  verdict: soft-404
-  published: false
-  http_status: 200
-  content_type: text/html
-  bytes: 405
-  note: >-
-    HTTP 200 serving HTML, not a text llms.txt. A 200 is not evidence.
+  published: true
+  probes:
+    - url: https://docs.developer.comcast.com/llms.txt
+      probed: '2026-09-05'
+      verdict: served
+      published: true
+      http_status: 200
+      content_type: text/plain; charset=utf-8
+      bytes: 30514
+      entries: 351
+      file: comcast-llms.txt
+      note: >-
+        Real llms.txt. Titled "Comcast Developer Docs". Indexes the whole
+        knowledge base including the Firebolt API reference for 1.7.0, 1.5.0,
+        1.0.0 and 0.8.1. Every page it lists also serves a markdown twin at
+        <page>.md, and each of those pages carries an in-body pointer back to
+        the llms.txt index.
+    - url: https://developer.comcast.com/llms.txt
+      probed: '2026-08-17'
+      reprobed: '2026-09-05'
+      verdict: soft-404
+      published: false
+      http_status: 200
+      content_type: text/html
+      bytes: 405
+      note: >-
+        HTTP 200 serving the site's 405-byte SPA shell, not a text llms.txt.
+        Unchanged on re-probe 2026-09-05. A 200 is not evidence. This host
+        returns the same shell for every path, including /.well-known/* — see
+        well-known/comcast-well-known.yml.
+  llms_full_txt:
+    probed: '2026-09-05'
+    url: https://docs.developer.comcast.com/llms-full.txt
+    published: false

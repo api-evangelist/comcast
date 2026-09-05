@@ -1,0 +1,153 @@
+# Comcast — error catalog
+#
+# THE HEADLINE IS A GAP, and it should be read as one. Across all 330 methods in
+# the three Firebolt OpenRPC contracts there are ZERO method-level `errors`
+# arrays. OpenRPC has a first-class place to declare per-method error objects
+# and Comcast declares none, so a client generated from the contract knows every
+# success shape and no failure shape.
+#
+# What Comcast DOES publish are two enumerated failure taxonomies inside the
+# schemas, plus an XML result document on the ingest surface. Those are real and
+# are recorded below. No numeric JSON-RPC error codes are published on the
+# public developer surface, and none are invented here.
+generated: '2026-09-05'
+method: derived
+source: >-
+  openrpc/comcast-firebolt-{core,manage,discovery}-openrpc.json v1.7.0;
+  https://docs.developer.comcast.com/docs/170-core-capabilities;
+  https://docs.developer.comcast.com/docs/endpoints (all fetched 2026-09-05)
+provider: Comcast
+providerId: comcast
+format: json-rpc-2.0
+rfc9457: false
+
+envelope:
+  surface: firebolt
+  shape: JSON-RPC 2.0 error object
+  fields:
+    - name: code
+      type: integer
+      note: Published values not documented on the public developer surface.
+    - name: message
+      type: string
+    - name: data
+      type: object
+      note: >-
+        Where a capability check fails, the deny detail is carried as
+        Capabilities/DenyReason values.
+  example_documented: false
+
+coverage:
+  methods_total: 330
+  methods_declaring_errors: 0
+  percent_with_declared_errors: 0.0
+  note: >-
+    Measured directly from the contracts, not estimated. This is the single
+    largest contract-quality gap in Comcast's published surface.
+
+# ---------------------------------------------------------------------------
+# Enumerated failure taxonomies that ARE in the contract
+# ---------------------------------------------------------------------------
+problem_types:
+  - id: capability-deny-unpermitted
+    taxonomy: 'Capabilities/DenyReason'
+    value: unpermitted
+    title: Capability not permitted for this app
+    meaning: >-
+      The app's manifest does not permit this capability in the requested role
+      (use / manage / provide). A distribution-time decision, not a user choice.
+    remediation: >-
+      The capability must be added to the app's Firebolt manifest and re-certified.
+      Not resolvable at runtime.
+  - id: capability-deny-unsupported
+    taxonomy: 'Capabilities/DenyReason'
+    value: unsupported
+    title: Capability not supported by this device
+    meaning: The device hardware or platform build does not implement the capability at all.
+    remediation: >-
+      Check Capabilities.supported before calling; degrade gracefully. Will not
+      become available on this device.
+  - id: capability-deny-disabled
+    taxonomy: 'Capabilities/DenyReason'
+    value: disabled
+    title: Capability supported but disabled
+    meaning: The device supports the capability but it is currently switched off.
+    remediation: Watch Capabilities.onAvailable; the state can change.
+  - id: capability-deny-unavailable
+    taxonomy: 'Capabilities/DenyReason'
+    value: unavailable
+    title: Capability temporarily unavailable
+    meaning: Supported and permitted, but not usable right now.
+    remediation: >-
+      Transient. Subscribe to Capabilities.onAvailable / Capabilities.onUnavailable
+      rather than polling.
+  - id: capability-deny-grantdenied
+    taxonomy: 'Capabilities/DenyReason'
+    value: grantDenied
+    title: User denied the grant
+    meaning: >-
+      The user was asked and said no. Documented example: "The user has denied
+      the app access to their postal code."
+    remediation: >-
+      Do not re-prompt in a loop. The grant can be changed later through the
+      platform's privacy settings or the Manage SDK UserGrants module.
+  - id: capability-deny-ungranted
+    taxonomy: 'Capabilities/DenyReason'
+    value: ungranted
+    title: User has not yet decided
+    meaning: >-
+      Documented example: "The user has not yet specified whether they grant the
+      app access to their postal code."
+    remediation: Call Capabilities.request to prompt for the grant.
+  - id: media-error-network
+    taxonomy: ErrorType
+    value: network
+    title: Media network error
+    meaning: Playback failure attributed to the network, as reported through Metrics.
+    remediation: Report through the Metrics module; retry per app policy.
+  - id: media-error-media
+    taxonomy: ErrorType
+    value: media
+    title: Media decode/playback error
+  - id: media-error-restriction
+    taxonomy: ErrorType
+    value: restriction
+    title: Playback blocked by a restriction (e.g. parental control or region)
+  - id: media-error-entitlement
+    taxonomy: ErrorType
+    value: entitlement
+    title: Viewer is not entitled to this content
+  - id: media-error-other
+    taxonomy: ErrorType
+    value: other
+    title: Unclassified media error
+
+# ---------------------------------------------------------------------------
+# Open Ingest surface
+# ---------------------------------------------------------------------------
+open_ingest:
+  surface: comcast:open-ingest-api
+  envelope: OpenIngestResult
+  content_type: application/xml
+  description: >-
+    The Open Ingest proxy answers a submission with an OpenIngestResult XML
+    document carrying per-asset outcome status. Comcast does not publish the
+    enumerated status values or an error-code reference for it on the public
+    docs; the Endpoints page shows the request and names the response document
+    without listing its failure values.
+  transport_failures_observed:
+    - status: 401
+      note: >-
+        Probed anonymously 2026-09-05 — every path on
+        compass-mmpwebservice-prod.codebig2.net returns 401 without a SAT bearer
+        token. Body is text/plain, not problem+json.
+  validation_tool: https://developer.ott-highway.comcast.com/feedvalidator
+
+gaps:
+  - No numeric JSON-RPC error codes published.
+  - No `errors` array on any of the 330 OpenRPC methods.
+  - No OpenIngestResult status-value reference on the public docs.
+  - No RFC 9457 problem+json anywhere.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
