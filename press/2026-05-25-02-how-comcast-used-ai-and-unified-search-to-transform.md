@@ -1,7 +1,9 @@
 ---
 title: How Comcast Used AI and Unified Search to Transform ...
 url: https://www.coveo.com/blog/comcast-employee-experience/
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Comcast" press release artificial intelligence'
 position: 2
 source: serpapi-google
