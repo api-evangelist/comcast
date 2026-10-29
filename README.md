@@ -1,4 +1,4 @@
-# Comcast (comcast)
+# Comcast
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,89 +66,122 @@
 
 Comcast Corporation is a global media and technology company with two primary businesses, Comcast Cable (Xfinity) and NBCUniversal, providing video, internet, voice, wireless, and entertainment services to residential and business customers. Comcast publishes a public developer program centered on the Firebolt application platform for connected TV experiences, along with authentication and content ingest endpoints used by NBCUniversal media partners. The Firebolt SDK family is used by app developers to write apps once and deploy across Xfinity X1, Xfinity Flex, Sky Q, and other Comcast set-top boxes and connected devices.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/comcast/refs/heads/main/apis.yml)
+**Areas:** Cable · Connected Devices · Entertainment · Internet · Media · Mobile · Streaming · Wireless · Fortune 100 · Telecommunications
 
-## Scope
+## Comcast on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for Comcast is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/comcast/](https://apis.io/providers/comcast/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (3)
 
-- Cable
-- Connected Devices
-- Entertainment
-- Internet
-- Media
-- Mobile
-- Streaming
-- Wireless
+- [Comcast Firebolt SDK](https://apis.io/apis/comcast/firebolt-sdk/) — Firebolt is Comcast's application platform for building apps that run on TVs, set-top boxes, and other connected home devices. The Firebolt SDK exposes a…
+- [Comcast Authentication API (SAT)](https://apis.io/apis/comcast/authentication-api/) — The Comcast Security Access Token (SAT) endpoint issues short-lived bearer tokens used to authenticate calls to Comcast partner APIs such as the Open Ingest…
+- [Comcast Open Ingest API](https://apis.io/apis/comcast/open-ingest-api/) — The Comcast Open Ingest endpoint accepts metadata and content asset packages from NBCUniversal media partners. Clients POST an XML payload describing assets…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-21
-- **Modified:** 2026-04-26
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### Comcast Firebolt SDK
-Firebolt is Comcast's application platform for building apps that run on TVs, set-top boxes, and other connected home devices. The Firebolt SDK exposes a family of JavaScript APIs (Lifecycle, Metrics, Device, Authentication, Discovery, Profile, Localization, Account) defined with OpenRPC and distributed via npm.
+Model Context Protocol servers that expose the API to agents.
 
-**Human URL:** [https://docs.developer.comcast.com/docs/firebolt-apis](https://docs.developer.comcast.com/docs/firebolt-apis)
+- [comcast-mcp.yml](https://apis.io/servers/comcast/comcast-mcp-yml/)
 
-#### Tags
+#### Security (3)
 
-- Connected Devices, JavaScript, SDK, Set-Top Box, TV Apps
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Comcast Authentication](https://apis.io/security/comcast/comcast-authentication/)
+- [Comcast Domain Security](https://apis.io/security/comcast/comcast-domain-security/)
+- [Comcast Vulnerability Disclosure](https://apis.io/security/comcast/comcast-vulnerability-disclosure/)
 
-- [Documentation](https://docs.developer.comcast.com/docs/firebolt-apis)
-- [Getting Started](https://docs.developer.comcast.com/docs/intro-to-firebolt)
-- [npm Package](https://www.npmjs.com/package/@firebolt-js/sdk)
-- [Repository](https://github.com/rdkcentral/firebolt-openrpc)
+#### OAuth scopes (1)
 
-### Comcast Authentication API (SAT)
-Issues short-lived bearer tokens used to authenticate calls to Comcast partner APIs (such as Open Ingest). Clients exchange an x-client-id and x-client-secret for an access token valid for 24 hours.
+The permissions the API asks for.
 
-**Human URL:** [https://docs.developer.comcast.com/docs/081-core-authentication](https://docs.developer.comcast.com/docs/081-core-authentication)
+- [Comcast Scopes](https://apis.io/scopes/comcast/comcast-scopes/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Authentication, OAuth, Tokens
+Published plans, tiers and prices.
 
-#### Properties
+- [Comcast Plans Pricing](https://apis.io/plans/comcast/comcast-plans-pricing/)
 
-- [Documentation](https://docs.developer.comcast.com/docs/081-core-authentication)
+#### Rate limits (1)
 
-### Comcast Open Ingest API
-NBCUniversal media partner endpoint that accepts XML metadata and content asset packages, authenticated with a Comcast SAT bearer token and partner-scoped (e.g. globalott).
+Published request limits.
 
-**Human URL:** [https://docs.developer.comcast.com/docs/endpoints](https://docs.developer.comcast.com/docs/endpoints)
+- [Comcast Rate Limits](https://apis.io/rate-limits/comcast/comcast-rate-limits/)
 
-#### Tags
+#### FinOps (1)
 
-- Ingest, Media, Metadata, NBCUniversal
+What the API costs to run, by operation.
 
-#### Properties
+- [Comcast Finops](https://apis.io/finops/comcast/comcast-finops/)
 
-- [Documentation](https://docs.developer.comcast.com/docs/endpoints)
+## Where to find this API
 
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.comcast.com)
-- [Developer Docs](https://docs.developer.comcast.com/)
-- [Developer Portal](https://developer.comcast.com/)
-- [GitHub](https://github.com/Comcast)
-- [Open Source](https://comcast.github.io/)
-- [Xfinity](https://www.xfinity.com/)
-- [NBCUniversal](https://www.nbcuniversal.com/)
-- [Investors](https://www.cmcsa.com/)
-- [Privacy](https://www.xfinity.com/privacy/policy)
-- [Terms](https://developers.xfinity.com/TOS.html)
+- [Documentation](https://docs.developer.comcast.com/)
+- [Getting started](https://docs.developer.comcast.com/docs/getting-started)
+- [API reference](https://docs.developer.comcast.com/docs/firebolt-apis)
+- [Sign up](https://developer.comcast.com/portal/dashboard)
+- [Support](https://docs.developer.comcast.com/docs/getting-help)
+- [Terms of service](https://developers.xfinity.com/TOS.html)
+- [GitHub](https://github.com/rdkcentral)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
+**Kin Score 31.7** — thin · rubric 0.24.0 · scored 2026-10-17
 
-**Email:** kin@apievangelist.com
+| Facet | Score |
+|---|---|
+| Discoverability | 69.6 |
+| Contract quality | 0.0 |
+| Contract governance | 4.5 |
+| Operational transparency | 36.8 |
+| Developer ergonomics | 61.3 |
+| Access clarity | 21.1 |
+
+**Agent readiness 13.5** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 40.0** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/comcast/](https://apis.io/providers/comcast/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Comcast: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/comcast/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
