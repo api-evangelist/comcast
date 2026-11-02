@@ -31,17 +31,25 @@ deliveryModel:
   generated: '2026-09-25'
   method: derived
 accessModel:
-  pricing: free
-  onboarding: unknown
+  pricing: paid
+  onboarding: self-serve
   trial: false
   try_now: false
   public: false
-  label: Free
-  confidence: medium
+  gated: none
+  gated_source:
+  - onboarding
+  label: Paid · Self-serve signup
+  confidence: high
   source:
-  - plans
+  - finops
+  - authentication
+  - scopes
+  - rate-limits
+  - security
+  - sandbox
   - {url: 'https://www.comcast.com', status: 301, note: 'declared website redirects to https://www.xfinity.com/ — a different registrable domain (comcast.com -> xfinity.com), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
-  generated: '2026-07-22'
+  generated: '2026-11-02'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/comcast.png
 access: 3rd-Party
