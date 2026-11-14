@@ -20,8 +20,14 @@ artifacts:
   conventions/comcast-conventions.yml:
     method: derived
     evidence: declared in the artifact
+  data-license/comcast-data-license.yml:
+    method: harvested
+    evidence: declared in the artifact
   data-model/comcast-data-model.yml:
     method: derived
+    evidence: declared in the artifact
+  eligibility/comcast-eligibility.yml:
+    method: harvested
     evidence: declared in the artifact
   errors/comcast-problem-types.yml:
     method: derived
@@ -38,6 +44,9 @@ artifacts:
   heartbeat/2026-11-06.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-13.yml:
+    method: unknown
+    evidence: no authorship recorded
   integrations/_index.yml:
     method: generated
     evidence: carries an API Evangelist house phrase
@@ -47,7 +56,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -111,6 +120,9 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-11-02T082323.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/comcast-lifecycle.yml:
@@ -202,6 +214,9 @@ artifacts:
     evidence: declared in the artifact
   skills/comcast-open-ingest-submission.md:
     method: generated
+    evidence: declared in the artifact
+  terms/comcast-terms-of-service.yml:
+    method: harvested
     evidence: declared in the artifact
   well-known/comcast-sat-openid-configuration.json:
     method: unknown

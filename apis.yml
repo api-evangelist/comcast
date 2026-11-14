@@ -49,7 +49,7 @@ accessModel:
   - security
   - sandbox
   - {url: 'https://www.comcast.com', status: 301, note: 'declared website redirects to https://www.xfinity.com/ — a different registrable domain (comcast.com -> xfinity.com), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
-  generated: '2026-11-06'
+  generated: '2026-11-13'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/comcast.png
 access: 3rd-Party
@@ -275,6 +275,12 @@ common:
     url: security/comcast-vulnerability-disclosure.yml
   - type: VulnerabilityDisclosure
     url: security/comcast-vulnerability-disclosure.yml
+  - type: UsageTerms
+    url: terms/comcast-terms-of-service.yml
+  - type: Eligibility
+    url: eligibility/comcast-eligibility.yml
+  - type: DataLicense
+    url: data-license/comcast-data-license.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
